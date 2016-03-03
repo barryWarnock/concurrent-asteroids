@@ -2,7 +2,10 @@ package collision;
 
 public class QuadTree {
 	
-	private TreeNode root;
+	private QuadTreeNode root;
 	
+	public QuadTree() {
+		root = new QuadTreeNode();
+	}
 	
 }
