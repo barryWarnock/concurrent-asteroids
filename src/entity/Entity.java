@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 public abstract class Entity {
 	
 	protected int xPos;
@@ -11,6 +13,6 @@ public abstract class Entity {
 		potentialCollisions.add(ent);
 	}
 	
-	public void runCollisionChecking();
+	public abstract void runCollisionChecking();
 
 }

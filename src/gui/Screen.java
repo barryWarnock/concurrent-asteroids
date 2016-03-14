@@ -5,8 +5,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
-import main.Score;
+import main.ScoreHandler;
 
 /**
  * This class is a singleton instance of the main screen for displaying graphics.
@@ -23,7 +24,7 @@ public class Screen extends JPanel {
 	
 	private int score;
 	
-	public static void updateScore(int points)
+	public void updateScore(int points)
 	{
 		score += points;
 	}
