@@ -24,6 +24,4 @@ public class QuadTreeNode<T> {
 
 		entities = new ArrayList();
 	}
-
-	
 }
