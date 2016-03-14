@@ -1,5 +1,5 @@
 package entity;
 
-public class Alien extends Foe {
+public class Alien {
 
 }
