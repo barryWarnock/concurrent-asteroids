@@ -11,5 +11,9 @@ public class Player extends Entity {
 	public Player getInstance() {
 		return player;
 	}
-	
+
+	@Override
+	public void runCollisionChecking() {
+
+	}
 }
