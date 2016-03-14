@@ -1,5 +1,5 @@
 package entity;
 
-public class Bullet extends Foe {
+public class Bullet {
 
 }
