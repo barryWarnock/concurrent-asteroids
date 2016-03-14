@@ -10,16 +10,16 @@ public class QuadTreeNode<T> {
 	private QuadTreeNode<T> child_3;
 	private QuadTreeNode<T> child_4;
 	
-	public QuadTreeNode<T>(int x_, int y_, int w_, int h_) {
+	public QuadTreeNode<T>(int x, int y, int width, int height) {
 		child_1 = null;
 		child_2 = null;
 		child_3 = null;
 		child_4 = null;
 		
-		x = x_;
-		y = y_;
-		width  = w_;
-		height = h_;
+		this.x = x;
+		this.y = y;
+		this.width  = w;
+		this.height = h;
 
 		entities = new ArrayList();
 	}
