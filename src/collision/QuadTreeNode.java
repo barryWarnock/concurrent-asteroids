@@ -161,4 +161,53 @@ public class QuadTreeNode<T> {
             this.insert(entity);
         }
     }
+
+    /**
+     * calls check_collisions(ArrayList<Entity> parentsEntitys)
+     */
+    public void check_collisions() {
+        check_collisions(null);
+    }
+
+    /**
+     * checks an entities list against itself then passes it down until it reaches a leaf node
+     * once there everything in each leaf is checked against everything else in that node and everything that only
+     * partially intersects that node
+     * @param parentsEntitys
+     */
+    public void check_collisions(ArrayList<Entity> parentsEntities) {
+        //check nodes entities against themselves
+        if (this.entities.size() > 1) {
+            Iterator<Entity> restOfList = this.entities.iterator();
+            do {
+                Entity current = restOfList.next();
+                Iterator<Entity> others = restOfList;
+                while (others.hasNext()) {
+                    //check current against others.next
+                }
+            } while (restOfList.hasNext())
+        }
+
+        //check this node against parentsEntities
+        if (parentsEntities != null) {
+            Iterator<Entity> mine    = this.entities.iterator(); //this nodes entities
+            Iterator<Entity> parents = parentsEntities.iterator();
+            while (mine.hasNext()) {
+                Entity current = mine.next();
+                while (parents.hasNext()) {
+                    //check current agains parents.next
+                }
+            }
+        }
+
+        //pass parentsEntities + this.entities to each of the children nodes for them to check against
+        if (isSplit) {
+            parentsEntities.addAll(this.entities);
+
+            child_1.check_collisions(parentsEntities);
+            child_2.check_collisions(parentsEntities);
+            child_3.check_collisions(parentsEntities);
+            child_4.check_collisions(parentsEntities);
+        }
+    }
 }
