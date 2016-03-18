@@ -1,23 +1,29 @@
 package collision;
 
+import entity.Entity;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 enum QuadTreeIntersect {
     NONE,
     PARTIAL,
     TOTAL
 }
 
-public class QuadTreeNode<T> {
+public class QuadTreeNode {
     protected static int splitThreshold;
     protected boolean isSplit = false;
 
-    double x, y, width, heigth;
+    double x, y, width, height;
 
     private List<Entity> entities;
 
-    private QuadTreeNode<T> child_1;
-    private QuadTreeNode<T> child_2;
-    private QuadTreeNode<T> child_3;
-    private QuadTreeNode<T> child_4;
+    private QuadTreeNode child_1;
+    private QuadTreeNode child_2;
+    private QuadTreeNode child_3;
+    private QuadTreeNode child_4;
 
     /**
      * @param x      the x position of this nodes upper left position
@@ -33,17 +39,17 @@ public class QuadTreeNode<T> {
 
         this.x = x;
         this.y = y;
-        this.width = w;
-        this.height = h;
+        this.width = width;
+        this.height = height;
 
         entities = new ArrayList();
     }
 
-    public void set_splitThreshold(int splitThreshold) {
+    public static void set_splitThreshold(int splitThreshold) {
         QuadTreeNode.splitThreshold = splitThreshold;
     }
 
-    public int get_splitThreshold() {
+    public static int get_splitThreshold() {
         return QuadTreeNode.splitThreshold;
     }
 
@@ -59,10 +65,10 @@ public class QuadTreeNode<T> {
      */
     protected int total_size() {
         int count = this.entities.size();
-        count += (child_1) ? (child_1.total_size()) : (0);
-        count += (child_2) ? (child_2.total_size()) : (0);
-        count += (child_3) ? (child_3.total_size()) : (0);
-        count += (child_4) ? (child_4.total_size()) : (0);
+        count += (this.child_1 != null) ? (this.child_1.total_size()) : (0);
+        count += (this.child_2 != null) ? (this.child_2.total_size()) : (0);
+        count += (this.child_3 != null) ? (this.child_3.total_size()) : (0);
+        count += (this.child_4 != null) ? (this.child_4.total_size()) : (0);
         return count;
     }
 
@@ -75,28 +81,28 @@ public class QuadTreeNode<T> {
      * TOTAL if the entity is completly within the node
      */
     protected QuadTreeIntersect check_entity_is_in(Entity e) {
-        int left = this.x;
-        int right = this.x + this.width;
-        int top = this.y;
-        int bottom = this.y + this.height;
+        double left = this.x;
+        double right = this.x + this.width;
+        double top = this.y;
+        double bottom = this.y + this.height;
 
-        int eLeft = e.x;
-        int eRight = e.x + e.width;
-        int eTop = e.y;
-        int eBottom = e.y + e.height;
+        double eLeft = e.get_x();
+        double eRight = e.get_x() + e.get_width();
+        double eTop = e.get_y();
+        double eBottom = e.get_y() + e.get_height();
 
         QuadTreeIntersect intersectType = null;
 
         //check for partial
         if (left < eLeft && eLeft < right && top < eTop && eTop < bottom) {
-            intersectType = PARTIAL;
+            intersectType = QuadTreeIntersect.PARTIAL;
 
             //check for total
             if (eRight < right && eBottom < bottom) {
-                intersectType = TOTAL;
+                intersectType = QuadTreeIntersect.TOTAL;
             }
         } else {
-            intersectType = NONE;
+            intersectType = QuadTreeIntersect.NONE;
         }
 
         return intersectType;
@@ -109,7 +115,7 @@ public class QuadTreeNode<T> {
      * @return false if the entity will not fit in this node
      */
     public boolean insert(Entity e) {
-        if (this.check_entity_is_in(e) == NONE) {
+        if (this.check_entity_is_in(e) == QuadTreeIntersect.NONE) {
             return false;
         }
 
@@ -127,13 +133,13 @@ public class QuadTreeNode<T> {
         child3Intersect = child_3.check_entity_is_in(e);
         child4Intersect = child_4.check_entity_is_in(e);
 
-        if (child1Intersect == TOTAL) {
+        if (child1Intersect == QuadTreeIntersect.TOTAL) {
             child_1.insert(e);
-        } else if (child2Intersect == TOTAL) {
+        } else if (child2Intersect == QuadTreeIntersect.TOTAL) {
             child_2.insert(e);
-        } else if (child3Intersect == TOTAL) {
+        } else if (child3Intersect == QuadTreeIntersect.TOTAL) {
             child_3.insert(e);
-        } else if (child4Intersect == TOTAL) {
+        } else if (child4Intersect == QuadTreeIntersect.TOTAL) {
             child_4.insert(e);
         } else { //if the entity does not fit neatly into any of the children add to this node
             this.entities.add(e);
@@ -149,15 +155,15 @@ public class QuadTreeNode<T> {
 
         double newWidth = this.width/2;
         double newHeight = this.height/2;
-        child_1 = new QuadTreeNode<Entity>(this.x, this.y, newWidth, newHeight);
-        child_2 = new QuadTreeNode<Entity>(this.x+newWidth, this.y, newWidth, newHeight);
-        child_3 = new QuadTreeNode<Entity>(this.x, this.y+newHeight, newWidth, newHeight);
-        child_2 = new QuadTreeNode<Entity>(this.x+newWidth, this.y+newHeight, newWidth, newHeight);
+        child_1 = new QuadTreeNode(this.x, this.y, newWidth, newHeight);
+        child_2 = new QuadTreeNode(this.x+newWidth, this.y, newWidth, newHeight);
+        child_3 = new QuadTreeNode(this.x, this.y+newHeight, newWidth, newHeight);
+        child_2 = new QuadTreeNode(this.x+newWidth, this.y+newHeight, newWidth, newHeight);
 
-        ArrayList entitiesCopy = this.entities;
+        List<Entity> entitiesCopy = this.entities;
         this.entities = null;
 
-        for (entity : entitiesCopy) {
+        for (Entity entity : entitiesCopy) {
             this.insert(entity);
         }
     }
@@ -173,7 +179,7 @@ public class QuadTreeNode<T> {
      * checks an entities list against itself then passes it down until it reaches a leaf node
      * once there everything in each leaf is checked against everything else in that node and everything that only
      * partially intersects that node
-     * @param parentsEntitys
+     * @param parentsEntities
      */
     public void check_collisions(ArrayList<Entity> parentsEntities) {
         //check nodes entities against themselves
@@ -185,7 +191,7 @@ public class QuadTreeNode<T> {
                 while (others.hasNext()) {
                     //check current against others.next
                 }
-            } while (restOfList.hasNext())
+            } while (restOfList.hasNext());
         }
 
         //check this node against parentsEntities

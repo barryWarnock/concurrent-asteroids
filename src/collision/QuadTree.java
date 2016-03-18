@@ -1,5 +1,7 @@
 package collision;
 
+import entity.Entity;
+
 public class QuadTree {
 	
 	private QuadTreeNode root;

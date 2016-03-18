@@ -17,7 +17,7 @@ public abstract class Entity {
 	
 	public abstract void runCollisionChecking();
 
-	public get_x() {
+	public int get_x() {
 		return xPos;
 	}
 
@@ -25,7 +25,7 @@ public abstract class Entity {
 		this.xPos = xPos;
 	}
 
-	public get_y() {
+	public int get_y() {
 		return yPos;
 	}
 
