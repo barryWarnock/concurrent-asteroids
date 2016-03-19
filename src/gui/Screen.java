@@ -26,6 +26,7 @@ public class Screen extends JPanel {
      * @param str The game score.
      */
     public void drawText(String str) {
+        Log.debug("Drawing a string");
         int fontSize = 20;
         Graphics backBufferGraphics = backBuffer.getGraphics();
         backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
@@ -52,8 +53,11 @@ public class Screen extends JPanel {
         Log.debug("Done painting to Buffer");
         backBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
     }
-	
-	private Screen() { }
+
+    /**
+     * generic constructor.
+     */
+    private Screen() { }
 
     /**
      *
@@ -66,7 +70,7 @@ public class Screen extends JPanel {
 	/**
 	 * Sets the screen to a certain size.
 	 */
-	public Screen intialize(int width, int height) {
+	public Screen initialize(int width, int height) {
         setSize(width, height);
         backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         return screen;
