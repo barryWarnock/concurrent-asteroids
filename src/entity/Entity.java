@@ -6,14 +6,14 @@ import java.util.List;
 
 public abstract class Entity {
 	
-	protected int xPos;
-	protected int yPos;
+	protected double xPos;
+	protected double yPos;
 
 	protected int width;
 	protected int height;
 
-	protected int xSpeed;
-	protected int ySpeed;
+	protected double xSpeed;
+	protected double ySpeed;
 
     protected List<Entity> collisions;
 
@@ -45,19 +45,19 @@ public abstract class Entity {
         collisions = new ArrayList<Entity>();
     }
 
-	public int get_x() {
+	public double get_x() {
 		return xPos;
 	}
 
-	public void set_x(int xPos) {
+	public void set_x(double xPos) {
 		this.xPos = xPos;
 	}
 
-	public int get_y() {
+	public double get_y() {
 		return yPos;
 	}
 
-	public void set_y(int yPos) {
+	public void set_y(double yPos) {
 		this.yPos = yPos;
 	}
 
