@@ -16,16 +16,16 @@ public class Main {
 	private static int height = 500;
 
 	public static void main(String[] args) {
-
 		Log.debugEnabled = true;
 		Log.infoEnabled = true;
+		Log.debug("Warming up.");
 
 		launch();
-		Game.run();
+		Game.getInstance().run();
 	}
 
 	private static void launch() {
-		Screen.getInstance().intialize(width, height);
+		Screen.getInstance().initialize(width, height);
 		JFrame mainFrame = new JFrame();
 		mainFrame.setSize(width, height);
 		mainFrame.setMaximumSize(new Dimension(width, height));
@@ -33,5 +33,6 @@ public class Main {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.add(Screen.getInstance());
 		mainFrame.setVisible(true);
+		Log.debug("Ready to go!");
 	}
 }

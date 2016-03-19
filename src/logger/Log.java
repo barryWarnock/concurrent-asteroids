@@ -7,17 +7,17 @@ public class Log {
 	
 	public static void debug(String str) {
 		if(debugEnabled) {
-			System.out.println("/debug " + str);
+			System.out.println("/debug/" + str);
 		}
 	}
 	public static void info(String str) {
 		if(infoEnabled) {
-			System.out.println("/info " + str);
+			System.out.println("/info/" + str);
 		}
 	}
 	public static void warn(String str) {
 		if(debugEnabled) {
-			System.out.print("/warn " + str);
+			System.out.print("/warn/" + str);
 		}
 	}
 }
