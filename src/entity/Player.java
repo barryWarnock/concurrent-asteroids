@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -21,8 +22,18 @@ public class Player extends Entity implements KeyListener{
 	}
 
 	@Override
-	public void runCollisionChecking() {
-		// TODO
+	public void update() {
+
+	}
+
+	@Override
+	public void draw(Graphics buffer) {
+
+	}
+
+	@Override
+	public void die() {
+
 	}
 
 	public Player getInstance() {
@@ -36,8 +47,7 @@ public class Player extends Entity implements KeyListener{
 	}
 
 
-	@Override
-	public void updateLocationAndMomentum() {
+	public void updateLocation() {
 		xPos += xSpeed;
 		yPos += ySpeed;
 	}
