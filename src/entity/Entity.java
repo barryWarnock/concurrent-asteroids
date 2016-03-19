@@ -1,5 +1,7 @@
 package entity;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Entity {
@@ -7,36 +9,41 @@ public abstract class Entity {
 	protected int xPos;
 	protected int yPos;
 
+	protected int width;
+	protected int height;
+
 	protected int xSpeed;
 	protected int ySpeed;
+
+    protected List<Entity> collisions;
 
 	public Entity() {
 		xPos = 0;
 		yPos = 0;
 		xSpeed = 0;
 		ySpeed = 0;
+
+        collisions = new ArrayList<Entity>();
 	}
 
-	protected int width;
-	protected int height;
-	
-	protected List<Entity> potentialCollisions;
-	
-	public void checkCollision(Entity ent) {
-		potentialCollisions.add(ent);
-	}
-	
-	public abstract void runCollisionChecking();
+    public boolean checkCollision(Entity other) {
+        boolean doesCollide = false;
 
-	public abstract void updateLocationAndMomentum();
+        if (((Math.abs(this.xPos - other.get_x()) * 2) < (this.width + other.get_width())) &&
+           ((Math.abs(this.yPos - other.get_y()) * 2) < (this.height + other.get_height()))) {
+            doesCollide = true;
+        }
 
-	/**
-	 * This is a very naive
-	 * @return Asteroid momentum
-	 */
-	protected int momentum() {
-		return (xSpeed + ySpeed);
-	}
+        return doesCollide;
+    }
+
+    public void reportCollision(Entity collided) {
+        collisions.add(collided);
+    }
+
+    public void clearCollisions() {
+        collisions = new ArrayList<Entity>();
+    }
 
 	public int get_x() {
 		return xPos;
@@ -69,4 +76,17 @@ public abstract class Entity {
 	public void set_height(int height) {
 		this.height = height;
 	}
+
+    /**
+     * updates the entities position
+     */
+    abstract public void update();
+
+    /**
+     * draws the entity to the screen buffer
+     * @param buffer the buffer to draw to
+     */
+    abstract public void draw(Graphics buffer);
+
+    abstract public void die();
 }
