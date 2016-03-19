@@ -1,7 +1,8 @@
 package game;
+import entity.Entity;
 import entity.Player;
 import gui.Screen;
-
+import java.util.ArrayList;
 
 /**
  * Created by Travis Kurucz on 2016-03-19.
@@ -11,7 +12,7 @@ public class Game {
 
 
     private static Game game = new Game();
-
+    private ArrayList<Entity> entityList = new ArrayList<Entity>();
 
 
     private Game(){
