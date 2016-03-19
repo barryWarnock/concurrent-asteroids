@@ -6,6 +6,17 @@ public abstract class Entity {
 	
 	protected int xPos;
 	protected int yPos;
+
+	protected int xSpeed;
+	protected int ySpeed;
+
+	public Entity() {
+		xPos = 0;
+		yPos = 0;
+		xSpeed = 0;
+		ySpeed = 0;
+	}
+
 	protected int width;
 	protected int height;
 	
@@ -16,6 +27,16 @@ public abstract class Entity {
 	}
 	
 	public abstract void runCollisionChecking();
+
+	public abstract void updateLocationAndMomentum();
+
+	/**
+	 * This is a very naive
+	 * @return Asteroid momentum
+	 */
+	protected int momentum() {
+		return (xSpeed + ySpeed);
+	}
 
 	public int get_x() {
 		return xPos;
