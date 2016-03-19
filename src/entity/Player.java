@@ -15,7 +15,7 @@ public class Player extends Entity implements KeyListener{
 	private int degOfRotation = 0;
 	//0 degrees corresponds to facing directly vertical
 
-	private static int linearSpeedChange = 1;
+	private static double linearSpeedChange = 1;
 	//speed increase in direction player is moving
 
 	private Player(){
@@ -71,8 +71,8 @@ public class Player extends Entity implements KeyListener{
 				//rotate clockwise, negative degree increase
 				break;
 			case VK_W: 	theta = degOfRotation%360;
-						xSpeed += (int)(Math.sin((double)theta)*linearSpeedChange);
-						ySpeed += (int)(Math.cos((double)theta)*linearSpeedChange);
+						xSpeed += (Math.sin((double)theta)*linearSpeedChange);
+						ySpeed += (Math.cos((double)theta)*linearSpeedChange);
 				/*
 				move forward, decompose linear speed change into x and y components
 				based on the coordinate system where 0 degrees is viewed as vertical
