@@ -4,13 +4,10 @@ import entity.Player;
 import gui.Screen;
 import java.util.ArrayList;
 
-/**
- * Created by Travis Kurucz on 2016-03-19.
- * Singleton class that controls the entities and updates the game status
- */
+import java.util.Random;
+
 public class Game {
-
-
+    protected Random rand = new Random();
 
     private static Game game = new Game();
     private ArrayList<Entity> entityList = new ArrayList<Entity>();
@@ -40,7 +37,7 @@ public class Game {
     }
 
     public static int getScore(){
-        return Player.getScore();
+        return player.getScore();
     }
 
     public int getScreenWidth(){
@@ -59,5 +56,17 @@ public class Game {
         }
     }
 
+    /**
+     * returns a random number in a given range (inclusive)
+     * @param min the minimum value
+     * @param max the maximum value
+     * @return a random number x where min <= x <= max
+     */
+    public int randomInRange(int min, int max) {
+        return rand.nextInt(max - min + 1) + min;
+    }
 
+    public boolean randomBool() {
+        return rand.nextBoolean();
+    }
 }

@@ -1,40 +1,90 @@
 package entity;
 
+import game.Game;
+
+import java.awt.*;
+
+enum AsteroidSize {
+    BIG,
+    MEDIUM,
+    SMALL
+}
+
 public class Asteroid extends Entity {
 
-    private int size;
+    private AsteroidSize size;
 
-    public Asteroid(int size) {
+    public Asteroid(AsteroidSize size) {
+        Game game = Game.getInstance();
+
         this.size = size;
+        int plusOrMinusX = (game.randomBool()) ? (1) : (-1);
+        int plusOrMinusY = (game.randomBool()) ? (1) : (-1);
+
+        switch (size) {
+            case BIG:
+                plusOrMinusX *= 1;
+                plusOrMinusY *= 1;
+                break;
+            case MEDIUM:
+                plusOrMinusX *= 2;
+                plusOrMinusY *= 2;
+                break;
+            case SMALL:
+                plusOrMinusX *= 3;
+                plusOrMinusY *= 3;
+                break;
+        }
+
+        int xVel = plusOrMinusX*game.randomInRange(1,10);
+        int yVel = plusOrMinusY*game.randomInRange(1,10);
+
+
+        this.setSpeed(xVel, yVel);
     }
-
-
-    @Override
-    public void runCollisionChecking() {
-        //TODO
-    }
-
-    @Override
-    public void updateLocationAndMomentum() {
-        //TODO
-    }
-
 
     private void split() {
-        //TODO add new asteroids to a global list of entities.
-        //TODO conserve momentum not add it
-        int newMomentum = momentum()/2;
-        Asteroid asteroid1 = new Asteroid(size/2);
-        this.size = size/2;
+        AsteroidSize newSize = null;
+        switch (this.size) {
+            case BIG:
+                newSize = AsteroidSize.MEDIUM;
+                break;
+            case MEDIUM:
+                newSize = AsteroidSize.SMALL;
+                break;
+            case SMALL:
+                return;
+        }
+
+        Game game = Game.getInstance();
+        Asteroid child1 = new Asteroid(newSize);
+        Asteroid child2 = new Asteroid(newSize);
+
+        child1.spawnAtParent(this);
+        child2.spawnAtParent(this);
     }
 
-    /**
-     *
-     * @return Asteroid momentum
-     */
     @Override
-    protected int momentum() {
-        return (xSpeed + ySpeed) * size;
+    public void die() {
+        Game game = Game.getInstance();
+        split();
+        game.removeEntity(this);
+        //play death animation
+    }
+
+    public void spawnAtParent(Asteroid parent) {
+        Game game = Game.getInstance();
+        int xOffset = game.randomInRange(1,5);
+        int yOffset = game.randomInRange(1,5);
+        int newX = (game.randomBool()) ? (parent.get_x() - xOffset) : (parent.get_x() + xOffset);
+        int newY = (game.randomBool()) ? (parent.get_y() - yOffset) : (parent.get_y() + yOffset);
+
+        this.setPos(newX, newY);
+    }
+
+    @Override
+    public void draw(Graphics buffer) {
+
     }
 }
 
