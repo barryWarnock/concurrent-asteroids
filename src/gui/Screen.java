@@ -21,16 +21,16 @@ public class Screen extends JPanel {
     private BufferedImage backBuffer;
 
     /**
-     * Draws an integer value to the top left of a screen.
+     * Draws a string to the top left of a screen.
      * This occurs on the buffer.
-     * @param score The game score.
+     * @param str The game score.
      */
-    public void drawScore(int score) {
+    public void drawText(String str) {
         int fontSize = 20;
         Graphics backBufferGraphics = backBuffer.getGraphics();
         backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
         backBufferGraphics.setColor(Color.white);
-        backBufferGraphics.drawString(Integer.toString(score), 5, fontSize);
+        backBufferGraphics.drawString(str, 5, fontSize);
     }
 
     /**
@@ -50,6 +50,7 @@ public class Screen extends JPanel {
         super.paintComponent(g);
         g.drawImage(backBuffer, 0, 0, this);
         Log.debug("Done painting to Buffer");
+        backBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
     }
 	
 	private Screen() { }
@@ -67,7 +68,7 @@ public class Screen extends JPanel {
 	 */
 	public Screen intialize(int width, int height) {
         setSize(width, height);
-        backBuffer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        backBuffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         return screen;
     }
 
