@@ -18,9 +18,11 @@ public class Main {
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
 		Log.infoEnabled = true;
-		Log.debug("Warming up.");
 
+		Log.debug("Warming up.");
 		launch();
+		Log.debug("Ready to go!");
+
 		Game.getInstance().run();
 	}
 
@@ -33,6 +35,5 @@ public class Main {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.add(Screen.getInstance());
 		mainFrame.setVisible(true);
-		Log.debug("Ready to go!");
 	}
 }
