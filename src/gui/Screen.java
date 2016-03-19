@@ -1,13 +1,12 @@
 package gui;
 
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import main.ScoreHandler;
+import logger.Log;
+
 
 /**
  * This class is a singleton instance of the main screen for displaying graphics.
@@ -18,61 +17,58 @@ import main.ScoreHandler;
 public class Screen extends JPanel {
 
 	private static Screen screen = new Screen();
+
+    private BufferedImage backBuffer;
+
+    /**
+     * Draws an integer value to the top left of a screen.
+     * This occurs on the buffer.
+     * @param score The game score.
+     */
+    public void drawScore(int score) {
+        int fontSize = 20;
+        Graphics backBufferGraphics = backBuffer.getGraphics();
+        backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
+        backBufferGraphics.setColor(Color.white);
+        backBufferGraphics.drawString(Integer.toString(score), 5, fontSize);
+    }
+
+    /**
+     * Draws an image to the buffer
+     * @param img image to print.
+     * @param x coordinate
+     * @param y coordinate
+     */
+    public void drawImage(Image img, int x, int y) {
+        Graphics backBufferGraphics = backBuffer.getGraphics();
+        backBufferGraphics.drawImage(img, x, y, this);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        Log.debug("Painting to Buffer");
+        super.paintComponent(g);
+        g.drawImage(backBuffer, 0, 0, this);
+        Log.debug("Done painting to Buffer");
+    }
 	
-	private int xDimension;
-	private int yDimension;
-	
-	private int score;
-	
-	public void updateScore(int points)
-	{
-		score += points;
-	}
-	
-//	private BufferedImage backgroundImage = ImageIO.read(getClass().getResource("/images/background.png"));
-//	
-//	@Override
-//    protected void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        //background drawing
-//        g.drawImage(backgroundImage, 0, 0, null);
-//        //player drawing
-//        int correctedHeight = HEIGHT - mainPlayer.getYPos() - mainPlayer.HEIGHT;
-//        g.drawImage(mainPlayer.characterImage, mainPlayer.X_POS, correctedHeight, null);
-//        //food drawing 
-//        for(int i=0; i<allFood.length; i++)
-//        {
-//        	if(allFood[i]!=null){
-//        		int correctedFoodHeight= HEIGHT - allFood[i].Y_POS - allFood[i].HEIGHT;
-//        		g.drawImage(allFood[i].foodImage, allFood[i].X_Pos, correctedFoodHeight, null);
-//        	}
-//        }
-//        //score and multiplier drawing 
-//        g.setFont(new Font("TimesRoman", Font.BOLD, 20)); 
-//        g.drawString(Score.getScore(), 625, 20);
-//        g.drawString(Score.getMultiplier(), 625, 40);
-//        
-//        //spikes drawing 
-//        for(int i=0; i<allSpikes.length; i++)
-//        {
-//        	if(allSpikes[i]!=null){
-//        		int correctedSpikeHeight= HEIGHT - allSpikes[i].Y_POS - allSpikes[i].HEIGHT;
-//        		g.drawImage(allSpikes[i].spikesImage , allSpikes[i].X_Pos, correctedSpikeHeight, null);
-//        	}
-//        } 
-//	}
-	
-	private Screen() {}
-	
-	public Screen getInstance() {
+	private Screen() { }
+
+    /**
+     *
+     * @return The Screen
+     */
+	public static Screen getInstance() {
 		return screen;
 	}
 	
 	/**
 	 * Sets the screen to a certain size.
 	 */
-	public void intialize(int xDim, int yDim) {
-		
-	}
-	
+	public Screen intialize(int width, int height) {
+        setSize(width, height);
+        backBuffer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        return screen;
+    }
+
 }
