@@ -1,6 +1,8 @@
 import gui.Screen;
 import logger.Log;
 import javax.swing.*;
+import java.awt.*;
+import game.Game;
 
 /**
 * Contains the main method to bootstrap the application
@@ -10,25 +12,26 @@ import javax.swing.*;
 
 public class Main {
 
+	private static int width = 500;
+	private static int height = 500;
+
 	public static void main(String[] args) {
 
 		Log.debugEnabled = true;
 		Log.infoEnabled = true;
 
-		int width = 500;
-		int height = 500;
+		launch();
+		Game.run();
+	}
+
+	private static void launch() {
 		Screen.getInstance().intialize(width, height);
-		Screen.getInstance().drawScore(100);
-
-
 		JFrame mainFrame = new JFrame();
 		mainFrame.setSize(width, height);
+		mainFrame.setMaximumSize(new Dimension(width, height));
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.add(Screen.getInstance());
-
-
-
 		mainFrame.setVisible(true);
 	}
 }
