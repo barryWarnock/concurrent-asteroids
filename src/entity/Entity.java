@@ -3,8 +3,9 @@ package entity;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.Runnable;
 
-public abstract class Entity {
+public abstract class Entity implements Runnable {
 	
 	protected int xPos;
 	protected int yPos;
@@ -25,6 +26,20 @@ public abstract class Entity {
 
         collisions = new ArrayList<Entity>();
 	}
+
+    public void setPos(int x, int y) {
+        this.xPos = x;
+        this.yPos = y;
+    }
+
+    public void setSpeed(int xVel, int yVel) {
+        this.xSpeed = xVel;
+        this.ySpeed = yVel;
+    }
+
+    public void run() {
+        update();
+    }
 
     public boolean checkCollision(Entity other) {
         boolean doesCollide = false;
@@ -80,7 +95,10 @@ public abstract class Entity {
     /**
      * updates the entities position
      */
-    abstract public void update();
+    public void update() {
+        xPos += xSpeed;
+        yPos += ySpeed;
+    }
 
     /**
      * draws the entity to the screen buffer
