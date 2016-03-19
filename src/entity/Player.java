@@ -3,6 +3,8 @@ package entity;
 public class Player extends Entity {
 
 	private static Player player = new Player();
+	protected static int score;
+	protected static int lives = 3;
 
 	private Player(){
 	}
@@ -17,7 +19,7 @@ public class Player extends Entity {
 		return player;
 	}
 
-	@Override
+
 	/**
 	 * TODO complete this, this should possibly be done in Enitity.
 	 */
@@ -25,8 +27,12 @@ public class Player extends Entity {
 
 	}
 
-	@Override
+
 	public void updateLocationAndMomentum() {
 		//TODO
+	}
+
+	public static int getScore(){
+		return score;
 	}
 }
