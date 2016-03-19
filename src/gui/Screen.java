@@ -1,7 +1,6 @@
 package gui;
 
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -28,43 +27,49 @@ public class Screen extends JPanel {
 	{
 		score += points;
 	}
-	
-//	private BufferedImage backgroundImage = ImageIO.read(getClass().getResource("/images/background.png"));
-//	
-//	@Override
-//    protected void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        //background drawing
-//        g.drawImage(backgroundImage, 0, 0, null);
-//        //player drawing
-//        int correctedHeight = HEIGHT - mainPlayer.getYPos() - mainPlayer.HEIGHT;
-//        g.drawImage(mainPlayer.characterImage, mainPlayer.X_POS, correctedHeight, null);
-//        //food drawing 
-//        for(int i=0; i<allFood.length; i++)
-//        {
-//        	if(allFood[i]!=null){
-//        		int correctedFoodHeight= HEIGHT - allFood[i].Y_POS - allFood[i].HEIGHT;
-//        		g.drawImage(allFood[i].foodImage, allFood[i].X_Pos, correctedFoodHeight, null);
-//        	}
-//        }
-//        //score and multiplier drawing 
-//        g.setFont(new Font("TimesRoman", Font.BOLD, 20)); 
-//        g.drawString(Score.getScore(), 625, 20);
-//        g.drawString(Score.getMultiplier(), 625, 40);
-//        
-//        //spikes drawing 
-//        for(int i=0; i<allSpikes.length; i++)
-//        {
-//        	if(allSpikes[i]!=null){
-//        		int correctedSpikeHeight= HEIGHT - allSpikes[i].Y_POS - allSpikes[i].HEIGHT;
-//        		g.drawImage(allSpikes[i].spikesImage , allSpikes[i].X_Pos, correctedSpikeHeight, null);
-//        	}
-//        } 
-//	}
+
+//	private BufferedImage backgroundImage = ImageIO.read(); //TODO get a background image to load
+//    private BufferedImage blackBackground = new BufferedImage(0, 0, 0);
+    //	private BufferedImage backgroundImage = ImageIO.read(getClass().getResource("/images/background.png"));
+
+    /*
+	@Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        //background drawing
+        g.drawImage(backgroundImage, 0, 0, null);
+
+        //player drawing
+        int correctedHeight = HEIGHT - mainPlayer.getYPos() - mainPlayer.HEIGHT;
+        g.drawImage(mainPlayer.characterImage, mainPlayer.X_POS, correctedHeight, null);
+        //food drawing
+        for(int i=0; i<allFood.length; i++)
+        {
+        	if(allFood[i]!=null){
+        		int correctedFoodHeight= HEIGHT - allFood[i].Y_POS - allFood[i].HEIGHT;
+        		g.drawImage(allFood[i].foodImage, allFood[i].X_Pos, correctedFoodHeight, null);
+        	}
+        }
+        //score and multiplier drawing
+        g.setFont(new Font("TimesRoman", Font.BOLD, 20));
+        g.drawString(Score.getScore(), 625, 20);
+        g.drawString(Score.getMultiplier(), 625, 40);
+
+        //spikes drawing
+        for(int i=0; i<allSpikes.length; i++)
+        {
+        	if(allSpikes[i]!=null){
+        		int correctedSpikeHeight= HEIGHT - allSpikes[i].Y_POS - allSpikes[i].HEIGHT;
+        		g.drawImage(allSpikes[i].spikesImage , allSpikes[i].X_Pos, correctedSpikeHeight, null);
+        	}
+        }
+	}
+	*/
 	
 	private Screen() {}
 	
-	public Screen getInstance() {
+	public static Screen getInstance() {
 		return screen;
 	}
 	
