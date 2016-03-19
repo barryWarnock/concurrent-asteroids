@@ -21,7 +21,7 @@ public class Player extends Entity {
 
 
 	/**
-	 * TODO complete this, this should possibly be done in Enitity.
+	 * TODO complete this, this should possibly be done in Entity.
 	 */
 	public void runCollisionChecking() {
 

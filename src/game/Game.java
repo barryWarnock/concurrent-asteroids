@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Travis Kurucz on 2016-03-19.
+ * Singleton class that controls the entities and updates the game status
  */
 public class Game {
 
@@ -17,6 +18,20 @@ public class Game {
 
     private Game(){
 
+    }
+
+    public void addEntity(Entity e){
+        entityList.add(e);
+    }
+
+    public boolean removeEntity(Entity e){
+        if (entityList.contains(e)) {
+            entityList.remove(e);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 
@@ -35,6 +50,7 @@ public class Game {
     public int getScreenHeight(){
         return Screen.getInstance().getHeight();
     }
+
 
 
     public void run(){
