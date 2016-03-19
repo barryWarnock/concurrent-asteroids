@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
@@ -17,28 +18,46 @@ public class Screen extends JPanel {
 
 	private static Screen screen = new Screen();
 
-    public Graphics g;
+    private BufferedImage backBuffer;
 
-    public void test() {
-
-        //score drawing
+    /**
+     * Draws an integer value to the top left of a screen.
+     * This occurs on the buffer.
+     * @param score The game score.
+     */
+    public void drawScore(int score) {
         int fontSize = 20;
-        g.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
-        g.setColor(Color.black);
-        g.drawString(Integer.toString(500), 5, fontSize);
+        Graphics backBufferGraphics = backBuffer.getGraphics();
+        backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
+        backBufferGraphics.setColor(Color.white);
+        backBufferGraphics.drawString(Integer.toString(score), 5, fontSize);
+    }
 
+    /**
+     * Draws an image to the buffer
+     * @param img image to print.
+     * @param x coordinate
+     * @param y coordinate
+     */
+    public void drawImage(Image img, int x, int y) {
+        Graphics backBufferGraphics = backBuffer.getGraphics();
+        backBufferGraphics.drawImage(img, x, y, this);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         Log.debug("Painting to Buffer");
         super.paintComponent(g);
-        this.g = g;
-        Log.debug("Done printing to Buffer");
+        g.drawImage(backBuffer, 0, 0, this);
+        Log.debug("Done painting to Buffer");
     }
 	
-	private Screen() {}
-	
+	private Screen() { }
+
+    /**
+     *
+     * @return The Screen
+     */
 	public static Screen getInstance() {
 		return screen;
 	}
@@ -48,6 +67,7 @@ public class Screen extends JPanel {
 	 */
 	public Screen intialize(int width, int height) {
         setSize(width, height);
+        backBuffer = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
         return screen;
     }
 
