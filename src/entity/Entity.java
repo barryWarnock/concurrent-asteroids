@@ -6,6 +6,8 @@ public abstract class Entity {
 	
 	protected int xPos;
 	protected int yPos;
+	protected int width;
+	protected int height;
 	
 	protected List<Entity> potentialCollisions;
 	
@@ -15,4 +17,35 @@ public abstract class Entity {
 	
 	public abstract void runCollisionChecking();
 
+	public int get_x() {
+		return xPos;
+	}
+
+	public void set_x(int xPos) {
+		this.xPos = xPos;
+	}
+
+	public int get_y() {
+		return yPos;
+	}
+
+	public void set_y(int yPos) {
+		this.yPos = yPos;
+	}
+
+	public int get_width() {
+		return width;
+	}
+
+	public void set_width(int width) {
+		this.width = width;
+	}
+
+	public int get_height() {
+		return height;
+	}
+
+	public void set_height(int height) {
+		this.height = height;
+	}
 }
