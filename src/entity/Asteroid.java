@@ -20,7 +20,7 @@ public class Asteroid extends Entity {
     }
 
 
-    private void slpit() {
+    private void split() {
         //TODO add new asteroids to a global list of entities.
         //TODO conserve momentum not add it
         int newMomentum = momentum()/2;
