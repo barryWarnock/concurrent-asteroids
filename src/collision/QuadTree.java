@@ -1,6 +1,7 @@
 package collision;
 
 import entity.Entity;
+import game.Game;
 
 public class QuadTree {
 	
