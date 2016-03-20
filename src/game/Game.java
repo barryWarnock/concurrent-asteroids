@@ -1,4 +1,6 @@
 package game;
+import collision.CollisionChecker;
+import collision.CollisionQuadTree;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
@@ -48,12 +50,45 @@ public class Game {
         return Screen.getInstance().getHeight();
     }
 
-
-
-    public void run(){
+    /**
+     * update and draw all entities
+     */
+    public void gameLoop(){
         while (true){
+            //update entities
+            ArrayList<Thread> entityThreads = new ArrayList();
+            for (Entity e: entityList) {
+                Thread newThread = new Thread(e);
+                newThread.run();
+                entityThreads.add(newThread);
+            }
 
+            //wait for updates to finish
+            for (Thread t : entityThreads) {
+                t.join();
+            }
+
+            //check collision
+            CollisionChecker collision = new CollisionQuadTree(5); //at most 5 entities per node
+            collision.checkCollisions(entityList);
+
+            //draw
+            for (Entity e : entityList) {
+                //e.draw();
+            }
+
+            drawUI();
+
+            //if {user exited}
+            //then: break
         }
+    }
+
+    /**
+     * overlay score and lives over the screen
+     */
+    protected void drawUI() {
+
     }
 
     /**

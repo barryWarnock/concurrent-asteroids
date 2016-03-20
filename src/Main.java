@@ -23,7 +23,7 @@ public class Main {
 		launch();
 		Log.debug("Ready to go!");
 
-		Game.getInstance().run();
+		Game.getInstance().gameLoop();
 	}
 
 	private static void launch() {
