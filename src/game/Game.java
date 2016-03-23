@@ -1,22 +1,29 @@
 package game;
 import collision.CollisionChecker;
-import collision.CollisionQuadTree;
+import collision.QuadTree;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
-import java.util.ArrayList;
+import logger.Log;
 
-import java.util.Random;
+import java.awt.event.KeyListener;
+import java.util.*;
 
 public class Game {
+
     protected Random rand = new Random();
 
     private static Game game = new Game();
-    private ArrayList<Entity> entityList = new ArrayList<Entity>();
+
+    private Set<Entity> entityList = new HashSet<>();
+
+    private int score;
+    private int lives;
 
 
-    private Game(){
-
+    private Game() {
+        lives = 3;
+        entityList.add(Player.getInstance());
     }
 
     public void addEntity(Entity e){
@@ -38,8 +45,8 @@ public class Game {
         return game;
     }
 
-    public static int getScore(){
-        return player.getScore();
+    public int getScore(){
+        return score;
     }
 
     public int getScreenWidth(){
@@ -52,13 +59,20 @@ public class Game {
 
     /**
      * update and draw all entities
+     * @param fps   This is the frames per second of the draw calls.
+     *              The "physics" backend may run a multiple of this.
      */
-    public void gameLoop(){
+    public void gameLoop(int fps) throws InterruptedException {
         while (true){
-            //update entities
-            ArrayList<Thread> entityThreads = new ArrayList();
-            for (Entity e: entityList) {
-                Thread newThread = new Thread(e);
+            long startTime = System.currentTimeMillis();
+
+            Iterator<Entity> entityItr = entityList.iterator();
+
+            //<----UPDATE SECTION------->
+            List<Thread> entityThreads = new ArrayList<>();
+
+            while(entityItr.hasNext()) {
+                Thread newThread = new Thread(entityItr.next());
                 newThread.run();
                 entityThreads.add(newThread);
             }
@@ -67,28 +81,41 @@ public class Game {
             for (Thread t : entityThreads) {
                 t.join();
             }
+            //<-----END UPDATE SECTION------->
 
             //check collision
-            CollisionChecker collision = new CollisionQuadTree(5); //at most 5 entities per node
-            collision.checkCollisions(entityList);
+            entityItr = entityList.iterator(); //re-init the iterator
+            CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
+            collision.checkCollisions(entityItr);
 
-            //draw
-            for (Entity e : entityList) {
-                //e.draw();
+            entityItr = entityList.iterator(); //re-init the iterator
+            while(entityItr.hasNext()) {
+                entityItr.next().draw(Screen.getInstance());
             }
 
             drawUI();
 
-            //if {user exited}
-            //then: break
+            //this delays the frames to the right side amount
+            while (System.currentTimeMillis()-startTime < 1000/fps) {
+                Thread.sleep(1); //Leave this at one since 60fps => 16ms per frame only
+            }
+
+            /*
+            This next line flips the backBuffer. It is crucial
+            that this is done some small amount of time after
+            the last draw call to the back buffer to prevent
+            stuttering.
+             */
+            Screen.getInstance().repaint();
         }
     }
 
     /**
-     * overlay score and lives over the screen
+     * Draws the score and lives on the screen.
      */
-    protected void drawUI() {
-
+    private void drawUI() {
+        Screen theScreen = Screen.getInstance();
+        theScreen.drawText(score + "\n" + "Lives: " + lives);
     }
 
     /**

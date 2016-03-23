@@ -1,10 +1,13 @@
 package entity;
 
-import java.awt.*;
+import gui.Screen;
+
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Runnable;
 
+//TODO make entities wrap the screen.
 public abstract class Entity implements Runnable {
 	
 	protected double xPos;
@@ -16,6 +19,8 @@ public abstract class Entity implements Runnable {
 	protected double xSpeed;
 	protected double ySpeed;
 
+	protected BufferedImage sprite;
+
     protected List<Entity> collisions;
 
 	public Entity() {
@@ -24,7 +29,7 @@ public abstract class Entity implements Runnable {
 		xSpeed = 0;
 		ySpeed = 0;
 
-        collisions = new ArrayList<Entity>();
+        collisions = new ArrayList<>();
 	}
 
     public void setPos(int x, int y) {
@@ -37,6 +42,7 @@ public abstract class Entity implements Runnable {
         this.ySpeed = yVel;
     }
 
+	@Override
     public void run() {
         update();
     }
@@ -57,7 +63,7 @@ public abstract class Entity implements Runnable {
     }
 
     public void clearCollisions() {
-        collisions = new ArrayList<Entity>();
+        collisions = new ArrayList<>();
     }
 
 	public double get_x() {
@@ -102,9 +108,12 @@ public abstract class Entity implements Runnable {
 
     /**
      * draws the entity to the screen buffer
-     * @param buffer the buffer to draw to
+     * @param screen the screen to draw to
      */
-    abstract public void draw(Graphics buffer);
+    public void draw(Screen screen) {
+		//TODO get graphic size/2 to draw in the center
+		screen.drawImage(sprite, (int) xPos, (int) yPos);
+	}
 
     abstract public void die();
 }
