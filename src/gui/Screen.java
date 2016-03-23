@@ -1,10 +1,13 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
+import entity.Player;
 import logger.Log;
 
 
@@ -59,9 +62,28 @@ public class Screen extends JPanel {
     }
 
     /**
-     * generic constructor.
+     * generic constructor with a keyListener.
      */
-    private Screen() { }
+    private Screen() {
+        //TODO this is poor engineering
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                Player.getInstance().keyReleased(e);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                Player.getInstance().keyPressed(e);
+            }
+        });
+        setFocusable(true);
+    }
 
     /**
      *

@@ -13,18 +13,17 @@ import static java.awt.event.KeyEvent.VK_A;
 import static java.awt.event.KeyEvent.VK_D;
 import static java.awt.event.KeyEvent.VK_W;
 
-public class Player extends Entity implements KeyListener{
+public class Player extends Entity {
 
 	private static Player player = new Player();
 
 	private int degOfRotation = 0;
 	//0 degrees corresponds to facing directly vertical
 
-	private static double linearSpeedChange = 1;
+	private static double linearSpeedChange = -1;
 	//speed increase in direction player is moving
 
 	private Player() {
-		//bufferedImage Sprite = imageIO.read(getClass().getResource(/graphics.playerMove));
 		try {
 			sprite = ImageIO.read(getClass().getResource("/graphics/player.png"));
 		} catch (IOException e) {
@@ -34,11 +33,42 @@ public class Player extends Entity implements KeyListener{
 		xPos = Screen.getInstance().getWidth()/2;
 		yPos = Screen.getInstance().getHeight()/2;
 
+
+
 	}
 
+	private boolean accelerating = false;
+	private boolean rotatingCW = false;
+	private boolean rotatingCCW = false;
+
+	//TODO this
 	@Override
 	public void update() {
-		//TODO this
+		//TODO set sprite as non accelerating one
+		if(accelerating) {
+			int theta = degOfRotation % 360;
+			xSpeed += (Math.sin((double) theta) * linearSpeedChange);
+			ySpeed += (Math.cos((double) theta) * linearSpeedChange);
+			//TODO swap the sprite for the accelerating one
+
+			/*
+			move forward, decompose linear speed change into x and y components
+			based on the coordinate system where 0 degrees is viewed as vertical
+			to the user and x and y axes are swapped relative to Cartesian coordinates
+			*/
+		}
+		if(rotatingCCW) {
+			degOfRotation += 1;
+		}
+		if(rotatingCW) {
+			degOfRotation -= 1;
+		}
+
+		xPos += xSpeed;
+		yPos += ySpeed;
+		//TODO decay speed
+		//TODO rotate the sprite
+
 	}
 
 	@Override
@@ -56,46 +86,52 @@ public class Player extends Entity implements KeyListener{
 		return player;
 	}
 
-
-	public void updateLocation() {
-		xPos += xSpeed;
-		yPos += ySpeed;
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		//TODO
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
+
 		int keyPressed = e.getKeyCode();
 
-		int theta;
-
 		switch(keyPressed) {
-			case VK_A: 	degOfRotation += 1;
+			case VK_A:
+				rotatingCCW = true;
 				//rotate cclockwise, positive degree increase
+				Log.debug("Player pressing A");
 				break;
-			case VK_D: 	degOfRotation -= 1;
+			case VK_D:
+				rotatingCW = true;
 				//rotate clockwise, negative degree increase
+				Log.debug("Player pressing D");
 				break;
-			case VK_W: 	theta = degOfRotation%360;
-						xSpeed += (Math.sin((double)theta)*linearSpeedChange);
-						ySpeed += (Math.cos((double)theta)*linearSpeedChange);
-				/*
-				move forward, decompose linear speed change into x and y components
-				based on the coordinate system where 0 degrees is viewed as vertical
-				to the user and x and y axes are swapped relative to Cartesian coordinates
-				*/
+			case VK_W:
+				accelerating = true;
+				Log.debug("Player pressing W");
 				break;
 			default:
+				Log.debug("Player pressing: " + keyPressed);
 				break;
 		}
 	}
-
-	@Override
 	public void keyReleased(KeyEvent e) {
-		//TODO
+
+		int keyReleased = e.getKeyCode();
+
+		switch(keyReleased) {
+			case VK_A:
+				rotatingCCW = false;
+				//rotate cclockwise, positive degree increase
+				Log.debug("Player released A");
+				break;
+			case VK_D:
+				rotatingCW = false;
+				//rotate clockwise, negative degree increase
+				Log.debug("Player released D");
+				break;
+			case VK_W:
+				accelerating = false;
+				Log.debug("Player releaded W");
+				break;
+			default:
+				Log.debug("Player releasing: " + keyReleased);
+				break;
+		}
 	}
 }

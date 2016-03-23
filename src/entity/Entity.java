@@ -2,12 +2,12 @@ package entity;
 
 import gui.Screen;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Runnable;
 
+//TODO make entities wrap the screen.
 public abstract class Entity implements Runnable {
 	
 	protected double xPos;
