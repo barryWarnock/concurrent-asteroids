@@ -36,7 +36,7 @@ public class Player extends Entity implements KeyListener{
 
 	}
 
-	public Player getInstance() {
+	public static Player getInstance() {
 		return player;
 	}
 

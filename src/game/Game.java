@@ -1,23 +1,23 @@
 package game;
 import collision.CollisionChecker;
-import collision.CollisionQuadTree;
+import collision.QuadTree;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
 import java.util.ArrayList;
 
+import java.util.List;
 import java.util.Random;
 
 public class Game {
     protected Random rand = new Random();
 
     private static Game game = new Game();
-    private ArrayList<Entity> entityList = new ArrayList<Entity>();
+    private List<Entity> entityList = new ArrayList<>();
+    private static int score;
 
 
-    private Game(){
-
-    }
+    private Game() { }
 
     public void addEntity(Entity e){
         entityList.add(e);
@@ -38,8 +38,8 @@ public class Game {
         return game;
     }
 
-    public static int getScore(){
-        return player.getScore();
+    public int getScore(){
+        return score;
     }
 
     public int getScreenWidth(){
@@ -53,10 +53,11 @@ public class Game {
     /**
      * update and draw all entities
      */
-    public void gameLoop(){
+    public void gameLoop() throws InterruptedException {
         while (true){
             //update entities
-            ArrayList<Thread> entityThreads = new ArrayList();
+            List<Thread> entityThreads = new ArrayList<>();
+
             for (Entity e: entityList) {
                 Thread newThread = new Thread(e);
                 newThread.run();
@@ -69,12 +70,12 @@ public class Game {
             }
 
             //check collision
-            CollisionChecker collision = new CollisionQuadTree(5); //at most 5 entities per node
+            CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
             collision.checkCollisions(entityList);
 
             //draw
             for (Entity e : entityList) {
-                //e.draw();
+                //e.draw(); //TODO this
             }
 
             drawUI();

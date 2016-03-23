@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CollisionQuadTree implements CollisionChecker {
+public class QuadTree implements CollisionChecker {
 	
-	public CollisionQuadTree(int splitThreshold) {
+	public QuadTree(int splitThreshold) {
 		//TODO define width and height somewhere else
 		QuadTreeNode.set_splitThreshold(splitThreshold);
 	}
