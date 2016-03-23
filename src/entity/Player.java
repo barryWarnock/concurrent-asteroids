@@ -1,5 +1,7 @@
 package entity;
 
+import gui.Screen;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -18,22 +20,21 @@ public class Player extends Entity implements KeyListener{
 	private static double linearSpeedChange = 1;
 	//speed increase in direction player is moving
 
-	private Player(){
-	}
+	private Player() { }
 
 	@Override
 	public void update() {
-
+		//TODO this
 	}
 
 	@Override
-	public void draw(Graphics buffer) {
-
+	public void draw(Screen screen) {
+		//TODO this
 	}
 
 	@Override
 	public void die() {
-
+		//TODO this
 	}
 
 	public static Player getInstance() {

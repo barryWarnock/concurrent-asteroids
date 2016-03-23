@@ -1,5 +1,7 @@
 package entity;
 
+import gui.Screen;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,9 +104,9 @@ public abstract class Entity implements Runnable {
 
     /**
      * draws the entity to the screen buffer
-     * @param buffer the buffer to draw to
+     * @param screen the screen to draw to
      */
-    abstract public void draw(Graphics buffer);
+    abstract public void draw(Screen screen);
 
     abstract public void die();
 }

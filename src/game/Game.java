@@ -64,11 +64,13 @@ public class Game {
         while (true){
             long startTime = System.currentTimeMillis();
 
+            Iterator<Entity> entityItr = entityList.iterator();
+
             //update entities
             List<Thread> entityThreads = new ArrayList<>();
 
-            for (Entity e: entityList) {
-                Thread newThread = new Thread(e);
+            while(entityItr.hasNext()) {
+                Thread newThread = new Thread(entityItr.next());
                 newThread.run();
                 entityThreads.add(newThread);
             }
@@ -80,15 +82,15 @@ public class Game {
 
             //check collision
             CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
-            collision.checkCollisions(entityList.iterator());
+            collision.checkCollisions(entityItr);
 
             //draw
             //TODO this
-            /*
-            for (Entity e : entityList) {
-                //e.draw();
+
+            while(entityItr.hasNext()) {
+                entityItr.next().draw(Screen.getInstance());
             }
-            */
+
             drawUI();
 
             //TODO change the magic numbers

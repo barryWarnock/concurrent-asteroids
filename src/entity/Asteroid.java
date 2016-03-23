@@ -1,6 +1,7 @@
 package entity;
 
 import game.Game;
+import gui.Screen;
 
 import java.awt.*;
 
@@ -70,6 +71,7 @@ public class Asteroid extends Entity {
         split();
         game.removeEntity(this);
         //play death animation
+        //TODO
     }
 
     public void spawnAtParent(Asteroid parent) {
@@ -81,8 +83,8 @@ public class Asteroid extends Entity {
     }
 
     @Override
-    public void draw(Graphics buffer) {
-
+    public void draw(Screen screen) {
+        //TODO
     }
 }
 
