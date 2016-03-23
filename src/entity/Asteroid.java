@@ -81,10 +81,5 @@ public class Asteroid extends Entity {
         xPos = (game.randomBool()) ? (parent.get_x() - xOffset) : (parent.get_x() + xOffset);
         yPos = (game.randomBool()) ? (parent.get_y() - yOffset) : (parent.get_y() + yOffset);
     }
-
-    @Override
-    public void draw(Screen screen) {
-        //TODO
-    }
 }
 

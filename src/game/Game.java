@@ -22,6 +22,7 @@ public class Game {
 
     private Game() {
         lives = 3;
+        entityList.add(Player.getInstance());
     }
 
     public void addEntity(Entity e){
@@ -66,7 +67,7 @@ public class Game {
 
             Iterator<Entity> entityItr = entityList.iterator();
 
-            //update entities
+            //<----UPDATE SECTION------->
             List<Thread> entityThreads = new ArrayList<>();
 
             while(entityItr.hasNext()) {
@@ -79,24 +80,23 @@ public class Game {
             for (Thread t : entityThreads) {
                 t.join();
             }
+            //<-----END UPDATE SECTION------->
 
             //check collision
+            entityItr = entityList.iterator(); //re-init the iterator
             CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
             collision.checkCollisions(entityItr);
 
-            //draw
-            //TODO this
-
+            entityItr = entityList.iterator(); //re-init the iterator
             while(entityItr.hasNext()) {
                 entityItr.next().draw(Screen.getInstance());
             }
 
             drawUI();
 
-            //TODO change the magic numbers
             //this delays the frames to the right side amount
             while (System.currentTimeMillis()-startTime < 1000/fps) {
-                Thread.sleep(1);
+                Thread.sleep(1); //Leave this at one since 60fps => 16ms per frame only
             }
 
             /*

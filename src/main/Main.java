@@ -16,7 +16,7 @@ public class Main {
 
 	private static int width = 500;
 	private static int height = 500;
-	private static int fps = 20;
+	private static int fps = 1;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;

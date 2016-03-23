@@ -1,10 +1,13 @@
 package entity;
 
 import gui.Screen;
+import logger.Log;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import static java.awt.event.KeyEvent.VK_A;
 import static java.awt.event.KeyEvent.VK_D;
@@ -20,15 +23,21 @@ public class Player extends Entity implements KeyListener{
 	private static double linearSpeedChange = 1;
 	//speed increase in direction player is moving
 
-	private Player() { }
+	private Player() {
+		//bufferedImage Sprite = imageIO.read(getClass().getResource(/graphics.playerMove));
+		try {
+			sprite = ImageIO.read(getClass().getResource("/graphics/player.png"));
+		} catch (IOException e) {
+			Log.warn(e.getMessage());
+		}
+		//TODO cleanup this bad engineering
+		xPos = Screen.getInstance().getWidth()/2;
+		yPos = Screen.getInstance().getHeight()/2;
 
-	@Override
-	public void update() {
-		//TODO this
 	}
 
 	@Override
-	public void draw(Screen screen) {
+	public void update() {
 		//TODO this
 	}
 
@@ -55,7 +64,7 @@ public class Player extends Entity implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-
+		//TODO
 	}
 
 	@Override
@@ -87,9 +96,6 @@ public class Player extends Entity implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
+		//TODO
 	}
-
-	//bufferedImage Sprite = imageIO.read(getClass().getResource(/graphics.playerMove));
-
 }
