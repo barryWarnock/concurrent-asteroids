@@ -6,14 +6,11 @@ import logger.Log;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_D;
-import static java.awt.event.KeyEvent.VK_W;
+import static java.awt.event.KeyEvent.*;
 
 public class Player extends Entity {
 
@@ -29,8 +26,8 @@ public class Player extends Entity {
 
 	private Player() {
 		try {
-			staticSprite = ImageIO.read(getClass().getResource("/graphics/player.png"));
-			movingSprite = ImageIO.read(getClass().getResource("/graphics/player_move.png"));
+			staticSprite = ImageIO.read(getClass().getResource("/graphics/Player.png"));
+			movingSprite = ImageIO.read(getClass().getResource("/graphics/Player_move.png"));
 		} catch (IOException e) {
 			Log.warn(e.getMessage());
 		}
@@ -145,6 +142,10 @@ public class Player extends Entity {
 				accelerating = true;
 				Log.debug("Player pressing W");
 				break;
+			case VK_SPACE:
+				shoot();
+				Log.debug("Player pressing Space");
+				break;
 			default:
 				Log.debug("Player pressing: " + keyPressed);
 				break;
@@ -173,5 +174,12 @@ public class Player extends Entity {
 				Log.debug("Player releasing: " + keyReleased);
 				break;
 		}
+	}
+
+	/**
+	 * Fires a bullet from the player.
+	 */
+	private void shoot() {
+		new Bullet(xSpeed+1.0,ySpeed+1.0, xPos+10, yPos+10);
 	}
 }
