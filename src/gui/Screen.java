@@ -49,7 +49,7 @@ public class Screen extends JPanel {
      */
     public void drawImage(Image img, int x, int y) {
         Graphics backBufferGraphics = backBuffer.getGraphics();
-        backBufferGraphics.drawImage(img, x, y, this);
+        backBufferGraphics.drawImage(img, y, x, this);
     }
 
     @Override

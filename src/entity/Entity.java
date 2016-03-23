@@ -111,6 +111,7 @@ public abstract class Entity implements Runnable {
      * @param screen the screen to draw to
      */
     public void draw(Screen screen) {
+		//TODO get graphic size/2 to draw in the center
 		screen.drawImage(sprite, (int) xPos, (int) yPos);
 	}
 

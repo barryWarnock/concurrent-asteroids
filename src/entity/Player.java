@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import static java.awt.event.KeyEvent.VK_A;
@@ -20,12 +22,15 @@ public class Player extends Entity {
 	private int degOfRotation = 0;
 	//0 degrees corresponds to facing directly vertical
 
-	private static double linearSpeedChange = -1;
+	private double linearSpeedChange = 0.25;
 	//speed increase in direction player is moving
+	private BufferedImage movingSprite;
+	private BufferedImage staticSprite;
 
 	private Player() {
 		try {
-			sprite = ImageIO.read(getClass().getResource("/graphics/player.png"));
+			staticSprite = ImageIO.read(getClass().getResource("/graphics/player.png"));
+			movingSprite = ImageIO.read(getClass().getResource("/graphics/player_move.png"));
 		} catch (IOException e) {
 			Log.warn(e.getMessage());
 		}
@@ -44,31 +49,66 @@ public class Player extends Entity {
 	//TODO this
 	@Override
 	public void update() {
-		//TODO set sprite as non accelerating one
+
 		if(accelerating) {
 			int theta = degOfRotation % 360;
-			xSpeed += (Math.sin((double) theta) * linearSpeedChange);
-			ySpeed += (Math.cos((double) theta) * linearSpeedChange);
-			//TODO swap the sprite for the accelerating one
+			xSpeed += (Math.sin(Math.toRadians(theta - 90)) * linearSpeedChange);
+			ySpeed += (Math.cos(Math.toRadians(theta - 90)) * linearSpeedChange);
+			sprite = movingSprite;
 
 			/*
 			move forward, decompose linear speed change into x and y components
 			based on the coordinate system where 0 degrees is viewed as vertical
 			to the user and x and y axes are swapped relative to Cartesian coordinates
 			*/
+		} else {
+			sprite = staticSprite;
 		}
 		if(rotatingCCW) {
-			degOfRotation += 1;
+			degOfRotation -= 3;
 		}
 		if(rotatingCW) {
-			degOfRotation -= 1;
+			degOfRotation += 3;
 		}
 
 		xPos += xSpeed;
 		yPos += ySpeed;
-		//TODO decay speed
-		//TODO rotate the sprite
 
+		double decayRate = 0.95;
+		if(0 != xSpeed) {
+			xSpeed *= decayRate;
+		}
+		if(0 != ySpeed) {
+			ySpeed *= decayRate;
+		}
+
+		sprite = rotate(sprite);
+
+	}
+
+	private BufferedImage rotate(BufferedImage image) {
+
+		BufferedImage newImg = new BufferedImage(image.getWidth(),
+									image.getHeight(), image.getType());
+		Graphics2D g2d = newImg.createGraphics();
+
+
+		AffineTransform at = new AffineTransform();
+
+		// 4. translate it to the center of the component
+		at.translate(sprite.getWidth() / 2, sprite.getHeight() / 2);
+
+		// 3. do the actual rotation
+		at.rotate(Math.toRadians(degOfRotation));
+
+		// 1. translate the object so that you rotate it around the
+		//    center (easier :))
+		at.translate(-image.getWidth()/2, -image.getHeight()/2);
+
+		// draw the image
+		g2d.drawImage(image, at, null);
+
+		return newImg;
 	}
 
 	@Override
