@@ -28,10 +28,14 @@ public class Screen extends JPanel {
     public void drawText(String str) {
         Log.debug("Drawing a string");
         int fontSize = 20;
-        Graphics backBufferGraphics = backBuffer.getGraphics();
-        backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
-        backBufferGraphics.setColor(Color.white);
-        backBufferGraphics.drawString(str, 5, fontSize);
+        String lines[] = str.split("\\n");
+        for(int i=0; lines.length > i; i++) {
+            Graphics backBufferGraphics = backBuffer.getGraphics();
+            backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
+            backBufferGraphics.setColor(Color.white);
+            backBufferGraphics.drawString(lines[i], 5, fontSize*(i+1));
+        }
+
     }
 
     /**

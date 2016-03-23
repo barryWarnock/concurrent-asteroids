@@ -1,3 +1,5 @@
+package main;
+
 import gui.Screen;
 import logger.Log;
 import javax.swing.*;
@@ -14,6 +16,7 @@ public class Main {
 
 	private static int width = 500;
 	private static int height = 500;
+	private static int fps = 20;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
@@ -24,7 +27,7 @@ public class Main {
 		Log.debug("Ready to go!");
 
 		try {
-			Game.getInstance().gameLoop();
+			Game.getInstance().gameLoop(fps);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			Log.warn(e.getMessage());
