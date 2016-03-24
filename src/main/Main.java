@@ -1,3 +1,5 @@
+package main;
+
 import gui.Screen;
 import logger.Log;
 import javax.swing.*;
@@ -14,6 +16,8 @@ public class Main {
 
 	private static int width = 500;
 	private static int height = 500;
+	private static int fps = 60;
+	public static int bulletLife = 20;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
@@ -23,7 +27,12 @@ public class Main {
 		launch();
 		Log.debug("Ready to go!");
 
-		Game.getInstance().gameLoop();
+		try {
+			Game.getInstance().gameLoop(fps);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Log.warn(e.getMessage());
+		}
 	}
 
 	private static void launch() {
@@ -32,7 +41,7 @@ public class Main {
 		mainFrame.setSize(width, height);
 		mainFrame.setMaximumSize(new Dimension(width, height));
 		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.add(Screen.getInstance());
 		mainFrame.setVisible(true);
 	}

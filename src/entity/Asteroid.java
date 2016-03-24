@@ -1,6 +1,7 @@
 package entity;
 
 import game.Game;
+import gui.Screen;
 
 import java.awt.*;
 
@@ -70,21 +71,15 @@ public class Asteroid extends Entity {
         split();
         game.removeEntity(this);
         //play death animation
+        //TODO
     }
 
     public void spawnAtParent(Asteroid parent) {
         Game game = Game.getInstance();
         int xOffset = game.randomInRange(1,5);
         int yOffset = game.randomInRange(1,5);
-        int newX = (game.randomBool()) ? (parent.get_x() - xOffset) : (parent.get_x() + xOffset);
-        int newY = (game.randomBool()) ? (parent.get_y() - yOffset) : (parent.get_y() + yOffset);
-
-        this.setPos(newX, newY);
-    }
-
-    @Override
-    public void draw(Graphics buffer) {
-
+        xPos = (game.randomBool()) ? (parent.get_x() - xOffset) : (parent.get_x() + xOffset);
+        yPos = (game.randomBool()) ? (parent.get_y() - yOffset) : (parent.get_y() + yOffset);
     }
 }
 
