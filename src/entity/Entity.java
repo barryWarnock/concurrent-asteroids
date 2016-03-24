@@ -29,7 +29,7 @@ public abstract class Entity implements Runnable {
 		xSpeed = 0;
 		ySpeed = 0;
 
-        collisions = new ArrayList<>();
+        collisions = new ArrayList<Entity>();
 	}
 
     public void setPos(int x, int y) {
@@ -63,7 +63,7 @@ public abstract class Entity implements Runnable {
     }
 
     public void clearCollisions() {
-        collisions = new ArrayList<>();
+        collisions = new ArrayList<Entity>();
     }
 
 	public double get_x() {

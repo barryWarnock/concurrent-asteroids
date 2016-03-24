@@ -15,7 +15,7 @@ public class Game {
 
     private static Game game = new Game();
 
-    private Set<Entity> entityList = new HashSet<>();
+    private Set<Entity> entityList = new HashSet<Entity>();
 
     private int score;
     private int lives;
@@ -69,7 +69,7 @@ public class Game {
             Iterator<Entity> entityItr = entityList.iterator();
 
             //<----UPDATE SECTION------->
-            List<Thread> entityThreads = new ArrayList<>();
+            List<Thread> entityThreads = new ArrayList<Thread>();
 
             while(entityItr.hasNext()) {
                 Thread newThread = new Thread(entityItr.next());
