@@ -7,22 +7,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class QuadTree implements CollisionChecker {
+public class CollisionQuadTree implements CollisionChecker {
 	
-	public QuadTree(int splitThreshold) {
+	public CollisionQuadTree(int splitThreshold) {
 		//TODO define width and height somewhere else
 		QuadTreeNode.set_splitThreshold(splitThreshold);
 	}
 
-    public void checkCollisions(Iterator<Entity> entities) {
+    public void checkCollisions(List<Entity> entities) {
         Game game = Game.getInstance();
         int width = game.getScreenWidth();
         int height = game.getScreenHeight();
 
         QuadTreeNode tree = new QuadTreeNode(0, 0, width, height);
 
-       while(entities.hasNext()) {
-            tree.insert(entities.next());
+        for (Entity entity : entities) {
+            tree.insert(entity);
         }
 
         tree.check_collisions();
@@ -36,8 +36,8 @@ enum QuadTreeIntersect {
 }
 
 class QuadTreeNode {
-    private static int splitThreshold;
-    private boolean isSplit = false;
+    protected static int splitThreshold;
+    protected boolean isSplit = false;
 
     double x, y, width, height;
 
@@ -205,7 +205,7 @@ class QuadTreeNode {
      * partially intersects that node
      * @param parentsEntities
      */
-    public void check_collisions(List<Entity> parentsEntities) {
+    public void check_collisions(ArrayList<Entity> parentsEntities) {
         //check nodes entities against themselves
         if (this.entities.size() > 1) {
             Iterator<Entity> restOfList = this.entities.iterator();
