@@ -1,13 +1,10 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
-import entity.Player;
 import logger.Log;
 
 
@@ -31,14 +28,10 @@ public class Screen extends JPanel {
     public void drawText(String str) {
         Log.debug("Drawing a string");
         int fontSize = 20;
-        String lines[] = str.split("\\n");
-        for(int i=0; lines.length > i; i++) {
-            Graphics backBufferGraphics = backBuffer.getGraphics();
-            backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
-            backBufferGraphics.setColor(Color.white);
-            backBufferGraphics.drawString(lines[i], 5, fontSize*(i+1));
-        }
-
+        Graphics backBufferGraphics = backBuffer.getGraphics();
+        backBufferGraphics.setFont(new Font("TimesRoman", Font.BOLD, fontSize));
+        backBufferGraphics.setColor(Color.white);
+        backBufferGraphics.drawString(str, 5, fontSize);
     }
 
     /**
@@ -49,7 +42,7 @@ public class Screen extends JPanel {
      */
     public void drawImage(Image img, int x, int y) {
         Graphics backBufferGraphics = backBuffer.getGraphics();
-        backBufferGraphics.drawImage(img, y, x, this);
+        backBufferGraphics.drawImage(img, x, y, this);
     }
 
     @Override
@@ -62,28 +55,9 @@ public class Screen extends JPanel {
     }
 
     /**
-     * generic constructor with a keyListener.
+     * generic constructor.
      */
-    private Screen() {
-        //TODO this is poor engineering
-        addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                Player.getInstance().keyReleased(e);
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                Player.getInstance().keyPressed(e);
-            }
-        });
-        setFocusable(true);
-    }
+    private Screen() { }
 
     /**
      *

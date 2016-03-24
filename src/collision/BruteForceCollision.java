@@ -6,16 +6,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class BruteForceCollision implements CollisionChecker{
-    public void checkCollisions(Iterator<Entity> entities) {
+    public void checkCollisions(List<Entity> entities) {
+        if (entities.size() > 1) {
+            return;
+        }
+        Iterator<Entity> currentIt = entities.iterator();
 
+        while (currentIt.hasNext()) {
+            Entity current = currentIt.next();
 
-        while (entities.hasNext()) {
-            Entity current = entities.next();
-
-            //TODO this is horribly broken
-            //The iterator must be cloned or deep copied.
-            //This version will not work at all.
-            Iterator<Entity> otherIt = entities;
+            Iterator<Entity> otherIt = currentIt;
             while(otherIt.hasNext()) {
                 Entity other = otherIt.next();
                 if (current.checkCollision(other)) {
