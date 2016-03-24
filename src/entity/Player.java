@@ -180,6 +180,8 @@ public class Player extends Entity {
 	 * Fires a bullet from the player.
 	 */
 	private void shoot() {
-		new Bullet(xSpeed+1.0,ySpeed+1.0, xPos+10, yPos+10);
+		new Bullet((Math.sin(Math.toRadians(degOfRotation - 90))),
+					(Math.cos(Math.toRadians(degOfRotation - 90))),
+					xPos+10, yPos+10);
 	}
 }

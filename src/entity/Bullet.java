@@ -14,6 +14,8 @@ public class Bullet extends Entity{
         Game.getInstance().addEntity(this);
         this.ySpeed = ySpeed;
         this.xSpeed = xSpeed;
+        this.xPos = xPos;
+        this.yPos = yPos;
         try {
             sprite = ImageIO.read(getClass().getResource("/graphics/Bullet.png"));
         } catch (IOException e) {
