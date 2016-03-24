@@ -4,9 +4,7 @@ import collision.QuadTree;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
-import logger.Log;
 
-import java.awt.event.KeyListener;
 import java.util.*;
 
 public class Game {
@@ -15,7 +13,7 @@ public class Game {
 
     private static Game game = new Game();
 
-    private Set<Entity> entityList = new HashSet<Entity>();
+    private Set<Entity> entityList = new HashSet<>();
 
     private int score;
     private int lives;
@@ -69,7 +67,7 @@ public class Game {
             Iterator<Entity> entityItr = entityList.iterator();
 
             //<----UPDATE SECTION------->
-            List<Thread> entityThreads = new ArrayList<Thread>();
+            List<Thread> entityThreads = new ArrayList<>();
 
             while(entityItr.hasNext()) {
                 Thread newThread = new Thread(entityItr.next());
