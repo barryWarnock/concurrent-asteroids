@@ -12,6 +12,20 @@ public class Bullet extends Entity{
 
     private final int bulletLife=100;
     private final int bulletSpeed=8;
+    private static final int maxBullets=20;
+    private static int currentBullets=0;
+
+    public static int getMaxBullets(){
+        return maxBullets;
+    }
+
+    public static int getCurrentBullets(){
+        return currentBullets;
+    }
+
+    public static void fireBullet(){
+        currentBullets++;
+    }
 
     public Bullet(double xSpeed, double ySpeed, double xPos, double yPos) {
         Game.getInstance().addEntity(this);
@@ -43,6 +57,7 @@ public class Bullet extends Entity{
 
         Game game = Game.getInstance();
         game.removeEntity(this);
+        currentBullets--;
 
     }
 }

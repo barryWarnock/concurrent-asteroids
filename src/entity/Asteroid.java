@@ -2,15 +2,32 @@ package entity;
 
 import game.Game;
 import gui.Screen;
+import logger.Log;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Asteroid extends Entity {
 
     private AsteroidSize size;
 
+    private BufferedImage smallSprite;
+    private BufferedImage mediumSprite;
+    private BufferedImage largeSprite;
+
+
     public Asteroid(AsteroidSize size) {
         Game game = Game.getInstance();
+
+        try {
+            smallSprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_3.png"));
+            mediumSprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_2.png"));
+            largeSprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_1.png"));
+        } catch (IOException e) {
+            Log.warn(e.getMessage());
+        }
+        //TODO cleanup this bad engineering
 
         this.size = size;
         int plusOrMinusX = (game.randomBool()) ? (1) : (-1);
