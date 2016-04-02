@@ -117,6 +117,7 @@ public class Player extends Entity {
 
 		//initialize();
 		//Game.getInstance().loseLife();
+
 	}
 
 	public static Player getInstance() {
