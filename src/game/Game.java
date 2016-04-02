@@ -1,5 +1,4 @@
 package game;
-import collision.BruteForceCollision;
 import collision.CollisionChecker;
 import collision.QuadTree;
 import entity.Asteroid;
@@ -73,7 +72,7 @@ public class Game {
         while (true){
             long startTime = System.currentTimeMillis();
 
-            if((beginLoop + Main.testLength) < startTime)
+            if((beginLoop + Main.testLength) > startTime)
             {
                 break gameLoop;
             }
@@ -109,13 +108,7 @@ public class Game {
             }
             //check collision
             entityItr = entityList.iterator(); //re-init the iterator
-            CollisionChecker collision;
-            if(Main.runQuadTree) {
-                collision = new QuadTree(5); //at most 5 entities per node
-            } else {
-                collision = new BruteForceCollision();
-            }
-
+            CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
             collision.checkCollisions(entityItr);
 
             entityItr = entityList.iterator(); //re-init the iterator
@@ -166,19 +159,15 @@ public class Game {
         return rand.nextBoolean();
     }
 
-    public double stressTest(int elements) throws InterruptedException {
+    public double stressTest(int elements){
         double avgFrameTime;
         frameCount = 0;
 
-        int i = elements;
         //add n asteroids to list
-        while(i > 0) {
+        while(elements > 0) {
             entityList.add(new Asteroid(AsteroidSize.BIG));
-            i--;
+            elements--;
         }
-        Log.info("New test running: " + elements + " entities exist.");
-        gameLoop(0);
-
         avgFrameTime = (Main.testLength/(double)frameCount);
         return avgFrameTime;
     }
