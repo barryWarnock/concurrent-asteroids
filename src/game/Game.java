@@ -1,9 +1,12 @@
 package game;
 import collision.CollisionChecker;
 import collision.QuadTree;
+import entity.Asteroid;
+import entity.AsteroidSize;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
+import main.Main;
 
 import java.util.*;
 
@@ -18,6 +21,7 @@ public class Game {
     private int score;
     private int lives;
 
+    private int frameCount = 0;
 
     private Game() {
         lives = 3;
@@ -61,26 +65,46 @@ public class Game {
      *              The "physics" backend may run a multiple of this.
      */
     public void gameLoop(int fps) throws InterruptedException {
+
+        long beginLoop = System.currentTimeMillis();
+        gameLoop:
         while (true){
             long startTime = System.currentTimeMillis();
 
+            if((beginLoop + Main.testLength) > startTime)
+            {
+                break gameLoop;
+            }
+
             Iterator<Entity> entityItr = entityList.iterator();
 
-            //<----UPDATE SECTION------->
-            List<Thread> entityThreads = new ArrayList<>();
+            /*
+            check if program is set to run threaded or sequentially
+             */
+            if(Main.runThreaded){
+                //<----UPDATE SECTION------->
+                List<Thread> entityThreads = new ArrayList<>();
 
-            while(entityItr.hasNext()) {
-                Thread newThread = new Thread(entityItr.next());
-                newThread.run();
-                entityThreads.add(newThread);
+                while (entityItr.hasNext()) {
+                    Thread newThread = new Thread(entityItr.next());
+                    newThread.run();
+                    entityThreads.add(newThread);
+                }
+
+                //wait for updates to finish
+                for (Thread t : entityThreads) {
+                    t.join();
+                }
+                //<-----END UPDATE SECTION------->
             }
+            else{
 
-            //wait for updates to finish
-            for (Thread t : entityThreads) {
-                t.join();
+                while (entityItr.hasNext()) {
+
+                    entityItr.next().update();
+
+                }
             }
-            //<-----END UPDATE SECTION------->
-
             //check collision
             entityItr = entityList.iterator(); //re-init the iterator
             CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
@@ -93,11 +117,17 @@ public class Game {
 
             drawUI();
 
-            //this delays the frames to the right side amount
-            while (System.currentTimeMillis()-startTime < 1000/fps) {
-                Thread.sleep(1); //Leave this at one since 60fps => 16ms per frame only
+            //frame limiter for normal run mode
+            if(!Main.testMode) {
+                //this delays the frames to the right side amount
+                while (System.currentTimeMillis() - startTime < 1000 / fps) {
+                    Thread.sleep(1); //Leave this at one since 60fps => 16ms per frame only
+                }
             }
+            else{
 
+                frameCount++;
+            }
             /*
             This next line flips the backBuffer. It is crucial
             that this is done some small amount of time after
@@ -128,5 +158,34 @@ public class Game {
 
     public boolean randomBool() {
         return rand.nextBoolean();
+    }
+
+    public double stressTestThread(int n){
+        double avgFrameTime;
+        frameCount = 0;
+
+        //add n asteroids to list
+        while(n > 0) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+            n--;
+        }
+        avgFrameTime = (Main.testLength/(double)frameCount);
+        return avgFrameTime;
+    }
+
+    public double stressTestQuadTree(int n){
+        double avgFrameTime;
+        frameCount = 0;
+
+        //add n asteroids to list
+        while(n > 0) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+            n--;
+        }
+
+        avgFrameTime = (Main.testLength/(double)frameCount);
+        return avgFrameTime;
+
+
     }
 }
