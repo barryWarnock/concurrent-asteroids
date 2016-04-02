@@ -1,13 +1,18 @@
 package game;
+
+import collision.BruteForceCollision;
 import collision.CollisionChecker;
 import collision.CollisionQuadTree;
+import entity.Asteroid;
+import entity.AsteroidSize;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
 import main.Main;
-import entity.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Game {
 
@@ -97,7 +102,13 @@ public class Game {
             if (System.currentTimeMillis() - lastDraw > (1000/30)) {
 
                 //check collision
-                CollisionChecker collision = new CollisionQuadTree(5); //at most 5 entities per node
+                CollisionChecker collision;
+                if(Main.runQuadTree) {
+                    collision = new CollisionQuadTree(5); //at most 5 entities per node
+                } else {
+                    collision = new BruteForceCollision();
+                }
+
                 collision.checkCollisions(entityList);
 
                 Screen screen = Screen.getInstance();
