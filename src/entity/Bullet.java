@@ -35,6 +35,8 @@ public class Bullet extends Entity{
         this.yPos = yPos;
         try {
             sprite = ImageIO.read(getClass().getResource("/graphics/Bullet.png"));
+            width = sprite.getWidth();
+            height = sprite.getHeight();
         } catch (IOException e) {
             logger.Log.warn(e.getMessage());
         }

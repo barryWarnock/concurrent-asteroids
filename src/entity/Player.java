@@ -28,6 +28,8 @@ public class Player extends Entity {
 	private Player() {
 		try {
 			staticSprite = ImageIO.read(getClass().getResource("/graphics/Player.png"));
+			width = staticSprite.getWidth();
+			height = staticSprite.getHeight();
 			movingSprite = ImageIO.read(getClass().getResource("/graphics/Player_move.png"));
 		} catch (IOException e) {
 			Log.warn(e.getMessage());
