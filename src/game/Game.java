@@ -18,7 +18,6 @@ public class Game {
     private int score;
     private int lives;
 
-
     private Game() {
         lives = 3;
         entityList.add(Player.getInstance());
