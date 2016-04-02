@@ -1,6 +1,6 @@
 package game;
 import collision.CollisionChecker;
-import collision.QuadTree;
+import collision.CollisionQuadTree;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
@@ -13,7 +13,7 @@ public class Game {
 
     private static Game game = new Game();
 
-    private Set<Entity> entityList = new HashSet<>();
+    private ArrayList<Entity> entityList = new ArrayList<>();
 
     private int score;
     private int lives;
@@ -61,42 +61,41 @@ public class Game {
      *              The "physics" backend may run a multiple of this.
      */
     public void gameLoop(int fps) throws InterruptedException {
+        long lastUpdate = 0;
+        long lastDraw   = 0;
         while (true){
-            long startTime = System.currentTimeMillis();
+            if (System.currentTimeMillis() - lastUpdate > (1000/60)) {
 
-            Iterator<Entity> entityItr = entityList.iterator();
+                //<----UPDATE SECTION------->
+                List<Thread> entityThreads = new ArrayList<>();
 
-            //<----UPDATE SECTION------->
-            List<Thread> entityThreads = new ArrayList<>();
+                for (int i = 0; i < entityList.size(); i++) {
+                    Thread newThread = new Thread(entityList.get(i));
+                    newThread.run();
+                    entityThreads.add(newThread);
+                }
 
-            while(entityItr.hasNext()) {
-                Thread newThread = new Thread(entityItr.next());
-                newThread.run();
-                entityThreads.add(newThread);
+                //wait for updates to finish
+                for (Thread t : entityThreads) {
+                    t.join();
+                }
+                //<-----END UPDATE SECTION------->
+                lastUpdate = System.currentTimeMillis();
             }
 
-            //wait for updates to finish
-            for (Thread t : entityThreads) {
-                t.join();
-            }
-            //<-----END UPDATE SECTION------->
+            if (System.currentTimeMillis() - lastDraw > (1000/30)) {
 
-            //check collision
-            entityItr = entityList.iterator(); //re-init the iterator
-            CollisionChecker collision = new QuadTree(5); //at most 5 entities per node
-            collision.checkCollisions(entityItr);
+                //check collision
+                CollisionChecker collision = new CollisionQuadTree(5); //at most 5 entities per node
+                collision.checkCollisions(entityList);
 
-            entityItr = entityList.iterator(); //re-init the iterator
-            while(entityItr.hasNext()) {
-                entityItr.next().draw(Screen.getInstance());
-            }
+                Screen screen = Screen.getInstance();
 
-            drawUI();
+                for (int i = 0; i < entityList.size(); i++) {
+                    entityList.get(i).draw(screen);
+                }
 
-            //this delays the frames to the right side amount
-            while (System.currentTimeMillis()-startTime < 1000/fps) {
-                Thread.sleep(1); //Leave this at one since 60fps => 16ms per frame only
-            }
+                drawUI();
 
             /*
             This next line flips the backBuffer. It is crucial
@@ -104,7 +103,9 @@ public class Game {
             the last draw call to the back buffer to prevent
             stuttering.
              */
-            Screen.getInstance().repaint();
+                Screen.getInstance().repaint();
+                lastDraw = System.currentTimeMillis();
+            }
         }
     }
 

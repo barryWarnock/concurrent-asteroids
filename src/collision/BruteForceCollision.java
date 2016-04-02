@@ -4,18 +4,12 @@ import entity.Entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import entity.Entity;
 
 public class BruteForceCollision implements CollisionChecker {
 
-    public void checkCollisions(Iterator<Entity> entities) {
-
-        List<Entity> entityList = new ArrayList<>();
-
-        while (entities.hasNext()) {
-            entityList.add(entities.next());
-        }
-        entities = entityList.iterator();
+    public void checkCollisions(ArrayList<Entity> entityList) {
+        Iterator<Entity> entities = entityList.iterator();
 
         while(entities.hasNext()) {
             Iterator<Entity> tempList = entityList.iterator();
