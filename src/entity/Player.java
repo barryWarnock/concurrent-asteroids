@@ -24,6 +24,7 @@ public class Player extends Entity {
 	private BufferedImage movingSprite;
 	private BufferedImage staticSprite;
 
+
 	private Player() {
 		try {
 			staticSprite = ImageIO.read(getClass().getResource("/graphics/Player.png"));
@@ -183,8 +184,11 @@ public class Player extends Entity {
 	 * Fires a bullet from the player.
 	 */
 	private void shoot() {
-		new Bullet((Math.sin(Math.toRadians(degOfRotation - 90))),
+		if (Bullet.getCurrentBullets() != Bullet.getMaxBullets()) {
+			new Bullet((Math.sin(Math.toRadians(degOfRotation - 90))),
 					(Math.cos(Math.toRadians(degOfRotation - 90))),
-					xPos+20, yPos+18);
+					xPos + 20, yPos + 18);
+			Bullet.fireBullet();
+		}
 	}
 }
