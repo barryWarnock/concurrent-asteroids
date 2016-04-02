@@ -4,6 +4,8 @@ import collision.CollisionQuadTree;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
+import main.Main;
+import entity.*;
 
 import java.util.*;
 
@@ -12,6 +14,7 @@ public class Game {
     protected Random rand = new Random();
 
     private static Game game = new Game();
+    private static int frameCount = 0;
 
     private ArrayList<Entity> entityList = new ArrayList<>();
 
@@ -62,24 +65,33 @@ public class Game {
     public void gameLoop(int fps) throws InterruptedException {
         long lastUpdate = 0;
         long lastDraw   = 0;
+
+        long beginLoop = System.currentTimeMillis();
         while (true){
+            frameCount++;
             if (System.currentTimeMillis() - lastUpdate > (1000/60)) {
 
-                //<----UPDATE SECTION------->
-                List<Thread> entityThreads = new ArrayList<>();
+                if (Main.runThreaded) {
+                    //<----UPDATE SECTION------->
+                    List<Thread> entityThreads = new ArrayList<>();
 
-                for (int i = 0; i < entityList.size(); i++) {
-                    Thread newThread = new Thread(entityList.get(i));
-                    newThread.run();
-                    entityThreads.add(newThread);
-                }
+                    for (int i = 0; i < entityList.size(); i++) {
+                        Thread newThread = new Thread(entityList.get(i));
+                        newThread.run();
+                        entityThreads.add(newThread);
+                    }
 
-                //wait for updates to finish
-                for (Thread t : entityThreads) {
-                    t.join();
+                    //wait for updates to finish
+                    for (Thread t : entityThreads) {
+                        t.join();
+                    }
+                    //<-----END UPDATE SECTION------->
+                    lastUpdate = System.currentTimeMillis();
+                } else {
+                    for (int i = 0; i < entityList.size(); i++) {
+                        entityList.get(i).update();
+                    }
                 }
-                //<-----END UPDATE SECTION------->
-                lastUpdate = System.currentTimeMillis();
             }
 
             if (System.currentTimeMillis() - lastDraw > (1000/30)) {
@@ -128,5 +140,18 @@ public class Game {
 
     public boolean randomBool() {
         return rand.nextBoolean();
+    }
+
+    public double stressTest(int elements){
+        double avgFrameTime;
+        frameCount = 0;
+
+        //add n asteroids to list
+        while(elements > 0) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+            elements--;
+        }
+        avgFrameTime = (Main.testLength/(double)frameCount);
+        return avgFrameTime;
     }
 }
