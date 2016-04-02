@@ -17,7 +17,7 @@ public class Game {
 
     private int score;
     private int lives;
-
+    public final static int bulletLife=100;
 
     private Game() {
         lives = 3;

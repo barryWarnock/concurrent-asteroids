@@ -29,14 +29,16 @@ public class Bullet extends Entity{
         xPos += xSpeed;
         yPos += ySpeed;
         age++;
-        if(Main.bulletLife < age) {
+        if(Game.bulletLife < age) {
             die();
         }
     }
 
     @Override
+
+    //if this is active, it crashes with a ConcurrentModificationException
     public void die() {
-        Game game = Game.getInstance();
-        game.removeEntity(this);
+       // Game game = Game.getInstance();
+       // game.removeEntity(this);
     }
 }
