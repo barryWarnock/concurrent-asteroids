@@ -69,8 +69,7 @@ public class Player extends Entity {
 			degOfRotation += 3;
 		}
 
-		xPos += xSpeed;
-		yPos += ySpeed;
+		super.update();
 
 		double decayRate = 0.95;
 		if(0 != xSpeed) {
