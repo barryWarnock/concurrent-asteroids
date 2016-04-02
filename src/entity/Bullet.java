@@ -12,7 +12,7 @@ public class Bullet extends Entity{
 
     private final int bulletLife=100;
     private final int bulletSpeed=8;
-    private static final int maxBullets=20;
+    private static final int maxBullets=8;
     private static int currentBullets=0;
 
     public static int getMaxBullets(){
