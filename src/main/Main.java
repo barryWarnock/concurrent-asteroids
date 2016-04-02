@@ -17,7 +17,6 @@ public class Main {
 	private static int width = 500;
 	private static int height = 500;
 	private static int fps = 60;
-	public static int bulletLife = 20;
 	public static int maxPlayerSpeed = 2;
 	public static boolean runThreaded = true;
 	public static boolean testMode = false;
@@ -26,7 +25,7 @@ public class Main {
 
 
 	public static void main(String[] args) {
-		Log.debugEnabled = true;
+		Log.debugEnabled = false;
 		Log.infoEnabled = true;
 
 		Log.debug("Warming up.");
