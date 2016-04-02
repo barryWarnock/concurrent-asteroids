@@ -17,7 +17,8 @@ public class Game {
 
     private int score;
     private int lives;
-    public final static int bulletLife=100;
+    private static final int bulletLife=100;
+    private static final int bulletSpeed=8;
 
     private Game() {
         lives = 3;
@@ -54,6 +55,10 @@ public class Game {
     public int getScreenHeight(){
         return Screen.getInstance().getHeight();
     }
+
+    public static int getBulletLife(){ return bulletLife;}
+
+    public static int getBulletSpeed() { return bulletSpeed;}
 
     /**
      * update and draw all entities

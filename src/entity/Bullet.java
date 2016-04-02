@@ -12,8 +12,8 @@ public class Bullet extends Entity{
 
     public Bullet(double xSpeed, double ySpeed, double xPos, double yPos) {
         Game.getInstance().addEntity(this);
-        this.ySpeed = ySpeed;
-        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed*Game.getBulletSpeed();
+        this.xSpeed = xSpeed*Game.getBulletSpeed();
         this.xPos = xPos;
         this.yPos = yPos;
         try {
@@ -29,7 +29,7 @@ public class Bullet extends Entity{
         xPos += xSpeed;
         yPos += ySpeed;
         age++;
-        if(Game.bulletLife < age) {
+        if(Game.getBulletLife() < age) {
             die();
         }
     }
@@ -38,7 +38,9 @@ public class Bullet extends Entity{
 
     //if this is active, it crashes with a ConcurrentModificationException
     public void die() {
-       // Game game = Game.getInstance();
-       // game.removeEntity(this);
+
+        Game game = Game.getInstance();
+        game.removeEntity(this);
+
     }
 }
