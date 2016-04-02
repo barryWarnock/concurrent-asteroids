@@ -136,23 +136,18 @@ public class Player extends Entity {
 			case VK_A:
 				rotatingCCW = true;
 				//rotate cclockwise, positive degree increase
-				Log.debug("Player pressing A");
 				break;
 			case VK_D:
 				rotatingCW = true;
 				//rotate clockwise, negative degree increase
-				Log.debug("Player pressing D");
 				break;
 			case VK_W:
 				accelerating = true;
-				Log.debug("Player pressing W");
 				break;
 			case VK_SPACE:
 				shoot();
-				Log.debug("Player pressing Space");
 				break;
 			default:
-				Log.debug("Player pressing: " + keyPressed);
 				break;
 		}
 	}
@@ -164,19 +159,15 @@ public class Player extends Entity {
 			case VK_A:
 				rotatingCCW = false;
 				//rotate cclockwise, positive degree increase
-				Log.debug("Player released A");
 				break;
 			case VK_D:
 				rotatingCW = false;
 				//rotate clockwise, negative degree increase
-				Log.debug("Player released D");
 				break;
 			case VK_W:
 				accelerating = false;
-				Log.debug("Player released W");
 				break;
 			default:
-				Log.debug("Player releasing: " + keyReleased);
 				break;
 		}
 	}

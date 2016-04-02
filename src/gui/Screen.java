@@ -29,7 +29,6 @@ public class Screen extends JPanel {
      * @param str The game score.
      */
     public void drawText(String str) {
-        Log.debug("Drawing a string");
         int fontSize = 20;
         String lines[] = str.split("\\n");
         for(int i=0; lines.length > i; i++) {
@@ -54,10 +53,8 @@ public class Screen extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        Log.debug("Painting to Buffer");
         super.paintComponent(g);
         g.drawImage(backBuffer, 0, 0, this);
-        Log.debug("Done painting to Buffer");
         backBuffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
     }
 
