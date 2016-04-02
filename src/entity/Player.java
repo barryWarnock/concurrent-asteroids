@@ -187,7 +187,7 @@ public class Player extends Entity {
 		if (Bullet.getCurrentBullets() != Bullet.getMaxBullets()) {
 			new Bullet((Math.sin(Math.toRadians(degOfRotation - 90))),
 					(Math.cos(Math.toRadians(degOfRotation - 90))),
-					xPos + 20, yPos + 18);
+					xPos + 9, yPos + 18);
 			Bullet.fireBullet();
 		}
 	}

@@ -10,8 +10,8 @@ public class Bullet extends Entity{
 
     private int age;
 
-    private final int bulletLife=100;
-    private final int bulletSpeed=8;
+    private final int bulletLife=50;
+    private final int bulletSpeed=7;
     private static final int maxBullets=8;
     private static int currentBullets=0;
 
@@ -51,8 +51,6 @@ public class Bullet extends Entity{
     }
 
     @Override
-
-    //if this is active, it crashes with a ConcurrentModificationException
     public void die() {
 
         Game game = Game.getInstance();
