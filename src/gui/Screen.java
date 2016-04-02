@@ -98,4 +98,7 @@ public class Screen extends JPanel {
         return screen;
     }
 
+    public BufferedImage getBuffer() {
+        return backBuffer;
+    }
 }

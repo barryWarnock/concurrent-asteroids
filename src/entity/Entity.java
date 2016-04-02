@@ -60,7 +60,6 @@ public abstract class Entity implements Runnable {
     }
 
     public void reportCollision(Entity collided) {
-
         collisions.add(collided);
     }
 

@@ -97,7 +97,7 @@ public class Game {
             if (System.currentTimeMillis() - lastDraw > (1000/30)) {
 
                 //check collision
-                CollisionChecker collision = new CollisionQuadTree(5); //at most 5 entities per node
+                CollisionChecker collision = new CollisionQuadTree(2); //at most 5 entities per node
                 collision.checkCollisions(entityList);
 
                 Screen screen = Screen.getInstance();

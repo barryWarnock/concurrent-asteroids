@@ -2,8 +2,15 @@ package collision;
 
 import entity.Entity;
 import game.Game;
+import gui.Screen;
 import logger.Log;
 
+import java.awt.Color;
+
+
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -66,6 +73,12 @@ class QuadTreeNode {
         this.height = height;
 
         entities = new ArrayList<>();
+
+        BufferedImage buffer = Screen.getInstance().getBuffer();
+        Graphics2D graphics = buffer.createGraphics();
+        Paint oldPaint = graphics.getPaint();
+        graphics.setPaint(Color.RED);
+        graphics.draw(new Rectangle2D.Double(x, y, width, height));
     }
 
     public static void set_splitThreshold(int splitThreshold) {
@@ -176,8 +189,6 @@ class QuadTreeNode {
      */
     protected void split() {
         this.isSplit = true;
-
-        System.out.println("split");
 
         double newWidth = this.width/2;
         double newHeight = this.height/2;
