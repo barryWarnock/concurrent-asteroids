@@ -5,12 +5,6 @@ import gui.Screen;
 
 import java.awt.*;
 
-enum AsteroidSize {
-    BIG,
-    MEDIUM,
-    SMALL
-}
-
 public class Asteroid extends Entity {
 
     private AsteroidSize size;
