@@ -115,8 +115,6 @@ public abstract class Entity implements Runnable {
 
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
-
-        System.out.println("update");
     }
 
     /**
