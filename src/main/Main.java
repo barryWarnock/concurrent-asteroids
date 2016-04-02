@@ -1,10 +1,11 @@
 package main;
 
+import game.Game;
 import gui.Screen;
 import logger.Log;
+
 import javax.swing.*;
 import java.awt.*;
-import game.Game;
 
 /**
 * Contains the main method to bootstrap the application
@@ -57,12 +58,31 @@ public class Main {
 	}
 
 	private static void test() throws  InterruptedException {
-		// Here we will do a thread test
+		int testLength = 10;
+		int testIncrements = 10;
+
 		runThreaded = true;
 		runQuadTree = false;
-		for(int i = 1; 10 > i; i++ ) {
-			System.out.println(Game.getInstance().stressTest(i*100));
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
+		}
 
+		runThreaded = true;
+		runQuadTree = true;
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
+		}
+
+		runThreaded = false;
+		runQuadTree = true;
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
+		}
+
+		runThreaded = false;
+		runQuadTree = false;
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
 		}
 
 	}
