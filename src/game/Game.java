@@ -46,7 +46,7 @@ public class Game {
     }
 
     public void Level1(int fps) throws InterruptedException {
-        for(int i=0; 5 > i; i++) {
+        for(int i=0; 2 > i; i++) {
             entityList.add(new Asteroid(AsteroidSize.BIG));
         }
         gameLoop(fps);
