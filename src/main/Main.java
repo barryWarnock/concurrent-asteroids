@@ -26,7 +26,7 @@ public class Main {
 
 
 	public static void main(String[] args) {
-		Log.debugEnabled = true;
+		Log.debugEnabled = false;
 		Log.infoEnabled = true;
 
 		Log.debug("Warming up.");
