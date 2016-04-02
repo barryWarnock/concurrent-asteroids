@@ -52,6 +52,10 @@ public class Game {
         gameLoop(fps);
     }
 
+    public void loseLife(){
+        lives--;
+    }
+
     public static Game getInstance(){
         return game;
     }
