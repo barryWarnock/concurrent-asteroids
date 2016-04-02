@@ -46,6 +46,10 @@ public class Game {
     }
 
 
+    public void loseLife(){
+        lives--;
+    }
+
     public static Game getInstance(){
         return game;
     }

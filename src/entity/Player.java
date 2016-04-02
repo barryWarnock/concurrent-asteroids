@@ -1,5 +1,6 @@
 package entity;
 
+import game.Game;
 import gui.Screen;
 import logger.Log;
 
@@ -116,6 +117,8 @@ public class Player extends Entity {
 
 
 		//initialize();
+		//Game.getInstance().loseLife();
+
 	}
 
 	public static Player getInstance() {
