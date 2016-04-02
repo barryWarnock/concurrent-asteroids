@@ -182,6 +182,6 @@ public class Player extends Entity {
 	private void shoot() {
 		new Bullet((Math.sin(Math.toRadians(degOfRotation - 90))),
 					(Math.cos(Math.toRadians(degOfRotation - 90))),
-					xPos+10, yPos+10);
+					xPos+20, yPos+18);
 	}
 }
