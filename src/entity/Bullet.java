@@ -36,6 +36,7 @@ public class Bullet extends Entity{
 
     @Override
     public void die() {
-        //TODO implement this
+        Game game = Game.getInstance();
+        game.removeEntity(this);
     }
 }
