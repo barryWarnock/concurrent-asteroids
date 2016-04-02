@@ -123,9 +123,7 @@ public class Game {
                 while (System.currentTimeMillis() - startTime < 1000 / fps) {
                     Thread.sleep(1); //Leave this at one since 60fps => 16ms per frame only
                 }
-            }
-            else{
-
+            } else {
                 frameCount++;
             }
             /*
@@ -160,32 +158,16 @@ public class Game {
         return rand.nextBoolean();
     }
 
-    public double stressTestThread(int n){
+    public double stressTest(int elements){
         double avgFrameTime;
         frameCount = 0;
 
         //add n asteroids to list
-        while(n > 0) {
+        while(elements > 0) {
             entityList.add(new Asteroid(AsteroidSize.BIG));
-            n--;
+            elements--;
         }
         avgFrameTime = (Main.testLength/(double)frameCount);
         return avgFrameTime;
-    }
-
-    public double stressTestQuadTree(int n){
-        double avgFrameTime;
-        frameCount = 0;
-
-        //add n asteroids to list
-        while(n > 0) {
-            entityList.add(new Asteroid(AsteroidSize.BIG));
-            n--;
-        }
-
-        avgFrameTime = (Main.testLength/(double)frameCount);
-        return avgFrameTime;
-
-
     }
 }

@@ -33,10 +33,7 @@ public class BruteForceCollision implements CollisionChecker {
                         }
                     }
                 }
-
             }
-
         }
-
     }
 }
