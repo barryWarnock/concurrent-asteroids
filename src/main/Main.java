@@ -19,14 +19,14 @@ public class Main {
 	private static int fps = 60;
 	public static int maxPlayerSpeed = 2;
 	public static boolean runThreaded = true;
-	public static boolean testMode = true;
+	public static boolean testMode = false;
 	public static boolean runQuadTree = true;
 	//testlength controls maximal time of game loop
 	public static long testLength = 100;//Integer.MAX_VALUE;
 
 
 	public static void main(String[] args) {
-		Log.debugEnabled = false;
+		Log.debugEnabled = true;
 		Log.infoEnabled = true;
 
 		Log.debug("Warming up.");
@@ -35,7 +35,6 @@ public class Main {
 
 		try {
 			if(testMode){
-				//TODO write tests here
 				test();
 			} else {
 				Game.getInstance().gameLoop(fps);
