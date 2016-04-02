@@ -76,7 +76,6 @@ public class Screen extends JPanel {
             public void keyReleased(KeyEvent e) {
                 Player.getInstance().keyReleased(e);
             }
-
             @Override
             public void keyPressed(KeyEvent e) {
                 Player.getInstance().keyPressed(e);
