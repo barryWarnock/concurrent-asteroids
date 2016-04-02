@@ -19,8 +19,8 @@ public class Main {
 	private static int height = 500;
 	private static int fps = 60;
 	public static boolean runThreaded = true;
-	public static boolean testMode = false;
 	public static boolean runQuadTree = true;
+	public static boolean testMode = false;
 	//testlength controls maximal time of game loop
 	public static long testLength = 100;//Integer.MAX_VALUE;
 
@@ -37,7 +37,7 @@ public class Main {
 			if(testMode){
 				test();
 			} else {
-				Game.getInstance().gameLoop(fps);
+				Game.getInstance().Level1(fps);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

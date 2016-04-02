@@ -45,6 +45,12 @@ public class Game {
         }
     }
 
+    public void Level1(int fps) throws InterruptedException {
+        for(int i=0; 5 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+        }
+        gameLoop(fps);
+    }
 
     public static Game getInstance(){
         return game;
@@ -74,7 +80,7 @@ public class Game {
         long beginLoop = System.currentTimeMillis();
         while (true){
             frameCount++;
-            if (System.currentTimeMillis() - lastUpdate > (1000/60)) {
+            if (System.currentTimeMillis() - lastUpdate > (1000/fps)) {
 
                 if (Main.runThreaded) {
                     //<----UPDATE SECTION------->
@@ -99,7 +105,7 @@ public class Game {
                 }
             }
 
-            if (System.currentTimeMillis() - lastDraw > (1000/30)) {
+            if (System.currentTimeMillis() - lastDraw > (1000/(fps/2))) {
 
                 //check collision
                 CollisionChecker collision;
