@@ -19,6 +19,11 @@ public class Main {
 	private static int fps = 60;
 	public static int bulletLife = 20;
 	public static int maxPlayerSpeed = 2;
+	public static boolean runThreaded = true;
+	public static boolean testMode = false;
+	//testlength controls maximal time of game loop
+	public static long testLength = Integer.MAX_VALUE;
+
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
