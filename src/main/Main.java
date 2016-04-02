@@ -20,9 +20,10 @@ public class Main {
 	public static int bulletLife = 20;
 	public static int maxPlayerSpeed = 2;
 	public static boolean runThreaded = true;
-	public static boolean testMode = false;
+	public static boolean testMode = true;
+	public static boolean runQuadTree = true;
 	//testlength controls maximal time of game loop
-	public static long testLength = Integer.MAX_VALUE;
+	public static long testLength = 100;//Integer.MAX_VALUE;
 
 
 	public static void main(String[] args) {
@@ -34,7 +35,12 @@ public class Main {
 		Log.debug("Ready to go!");
 
 		try {
-			Game.getInstance().gameLoop(fps);
+			if(testMode){
+				//TODO write tests here
+				test();
+			} else {
+				Game.getInstance().gameLoop(fps);
+			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 			Log.warn(e.getMessage());
@@ -50,5 +56,16 @@ public class Main {
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.add(Screen.getInstance());
 		mainFrame.setVisible(true);
+	}
+
+	private static void test() throws  InterruptedException {
+		// Here we will do a thread test
+		runThreaded = true;
+		runQuadTree = false;
+		for(int i = 1; 10 > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*100));
+
+		}
+
 	}
 }
