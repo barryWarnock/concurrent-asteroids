@@ -1,5 +1,6 @@
 package entity;
 
+import game.Game;
 import gui.Screen;
 
 import java.awt.image.BufferedImage;
@@ -104,6 +105,18 @@ public abstract class Entity implements Runnable {
     public void update() {
         xPos += xSpeed;
         yPos += ySpeed;
+
+		Game game = Game.getInstance();
+        float screenWidth = game.getScreenWidth();
+        float screenHeight = game.getScreenHeight();
+
+        xPos = (xPos < 0) ? (screenWidth - width) : (xPos);
+        xPos = (xPos + width > screenWidth) ? (0) : (xPos);
+
+        yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
+        yPos = (yPos + height > screenHeight) ? (0) : (yPos);
+
+        System.out.println("update");
     }
 
     /**
