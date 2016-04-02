@@ -111,6 +111,9 @@ public class Player extends Entity {
 	@Override
 	public void die() {
 		//TODO this
+
+
+		//initialize();
 	}
 
 	public static Player getInstance() {
@@ -168,7 +171,7 @@ public class Player extends Entity {
 				break;
 			case VK_W:
 				accelerating = false;
-				Log.debug("Player releaded W");
+				Log.debug("Player released W");
 				break;
 			default:
 				Log.debug("Player releasing: " + keyReleased);
