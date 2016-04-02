@@ -71,7 +71,7 @@ public class Game {
         while (true){
             long startTime = System.currentTimeMillis();
 
-            if((beginLoop + Main.testLength) > startTime)
+            if((beginLoop + Main.testLength) < startTime)
             {
                 break gameLoop;
             }
