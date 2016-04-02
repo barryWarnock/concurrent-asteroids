@@ -1,7 +1,6 @@
 package entity;
 
 import game.Game;
-import gui.Screen;
 import logger.Log;
 
 import javax.imageio.ImageIO;
@@ -68,7 +67,6 @@ public class Asteroid extends Entity {
                 return;
         }
 
-        Game game = Game.getInstance();
         Asteroid child1 = new Asteroid(newSize);
         Asteroid child2 = new Asteroid(newSize);
 
