@@ -54,6 +54,9 @@ public class Game {
 
     public void loseLife(){
         lives--;
+        if(lives == -1){
+            main.playerLost = true;
+        }
     }
 
     public static Game getInstance(){
@@ -127,6 +130,10 @@ public class Game {
                     entityList.get(i).draw(screen);
                 }
 
+                if(playerLost){
+                    onLose();
+                }
+
                 drawUI();
 
             /*
@@ -174,5 +181,10 @@ public class Game {
         }
         avgFrameTime = (Main.testLength/(double)frameCount);
         return avgFrameTime;
+    }
+
+    private void onLose()
+    {
+        JOptionPane.showMessage("You Lost. \nYour score was: " + score);
     }
 }

@@ -24,6 +24,7 @@ public class Main {
 	//testlength controls maximal time of game loop
 	public static long testLength = 100;//Integer.MAX_VALUE;
 
+	public static boolean playerLost = false;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
