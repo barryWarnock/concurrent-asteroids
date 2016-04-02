@@ -29,12 +29,11 @@ public class Bullet extends Entity{
 
     @Override
     public void update() {
-        xPos += xSpeed;
-        yPos += ySpeed;
         age++;
         if(bulletLife < age) {
             die();
         }
+        super.update();
     }
 
     @Override
