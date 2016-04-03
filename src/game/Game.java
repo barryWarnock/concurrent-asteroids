@@ -10,6 +10,7 @@ import entity.Player;
 import gui.Screen;
 import main.Main;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -55,7 +56,7 @@ public class Game {
     public void loseLife(){
         lives--;
         if(lives == -1){
-            main.playerLost = true;
+            Main.playerLost = true;
         }
     }
 
@@ -130,7 +131,7 @@ public class Game {
                     entityList.get(i).draw(screen);
                 }
 
-                if(playerLost){
+                if(Main.playerLost){
                     onLose();
                 }
 
@@ -185,6 +186,7 @@ public class Game {
 
     private void onLose()
     {
-        JOptionPane.showMessage("You Lost. \nYour score was: " + score);
+        //JOptionPane.showMessageDialog("You Lost. \nYour score was: " + score);
+        JOptionPane.showMessageDialog(null, "You Lost. \nYour score was: " + score, "Loser", JOptionPane.INFORMATION_MESSAGE);
     }
 }

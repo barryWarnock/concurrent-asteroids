@@ -7,6 +7,6 @@
 *.class
 
 *.xml
-
+*iml
 /bin
 /.idea
