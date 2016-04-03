@@ -67,8 +67,11 @@ public abstract class Entity implements Runnable {
         collisions = new ArrayList<>();
     }
 
+	/*
+	as a temporary fix to the coordinate weirdness im switching these to return their opposites
+	 */
 	public double get_x() {
-		return xPos;
+		return yPos;
 	}
 
 	public void set_x(double xPos) {
@@ -76,7 +79,7 @@ public abstract class Entity implements Runnable {
 	}
 
 	public double get_y() {
-		return yPos;
+		return xPos;
 	}
 
 	public void set_y(double yPos) {
@@ -84,7 +87,7 @@ public abstract class Entity implements Runnable {
 	}
 
 	public int get_width() {
-		return width;
+		return height;
 	}
 
 	public void set_width(int width) {
@@ -92,7 +95,7 @@ public abstract class Entity implements Runnable {
 	}
 
 	public int get_height() {
-		return height;
+		return width;
 	}
 
 	public void set_height(int height) {

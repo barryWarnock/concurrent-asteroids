@@ -117,29 +117,21 @@ class QuadTreeNode {
      * TOTAL if the entity is completly within the node
      */
     protected QuadTreeIntersect check_entity_is_in(Entity e) {
-        double left = this.x;
-        double right = this.x + this.width;
-        double top = this.y;
-        double bottom = this.y + this.height;
+        double eX      = e.get_x();
+        double eY      = e.get_y();
+        double eWidth  = e.get_width();
+        double eHeight = e.get_height();
 
-        double eLeft = e.get_x();
-        double eRight = e.get_x() + e.get_width();
-        double eTop = e.get_y();
-        double eBottom = e.get_y() + e.get_height();
-
-        QuadTreeIntersect intersectType = null;
+        QuadTreeIntersect intersectType = intersectType = QuadTreeIntersect.NONE;;
 
         //check for partial
-        if (((Math.abs(this.x - e.get_x()) * 2) < (this.width + e.get_width())) &&
-                ((Math.abs(this.y - e.get_y()) * 2) < (this.height + e.get_height()))) {
+        if (!(this.x > eX+eWidth || this.x+this.width < eX || this.y > eY+eHeight || this.y+this.height < eY)) {
             intersectType = QuadTreeIntersect.PARTIAL;
 
             //check for total
-            if (eRight < right && eBottom < bottom && eLeft > left && eTop > top) {
+            if (eX > this.x && eX < this.x + this.width && eY > this.y && eY < this.y + this.height) {
                 intersectType = QuadTreeIntersect.TOTAL;
             }
-        } else {
-            intersectType = QuadTreeIntersect.NONE;
         }
 
         return intersectType;
