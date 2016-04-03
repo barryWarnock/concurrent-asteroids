@@ -1,10 +1,11 @@
 package main;
 
+import game.Game;
 import gui.Screen;
 import logger.Log;
+
 import javax.swing.*;
 import java.awt.*;
-import game.Game;
 
 /**
 * Contains the main method to bootstrap the application
@@ -17,13 +18,13 @@ public class Main {
 	private static int width = 500;
 	private static int height = 500;
 	private static int fps = 60;
-	public static int maxPlayerSpeed = 2;
 	public static boolean runThreaded = true;
-	public static boolean testMode = false;
 	public static boolean runQuadTree = true;
+	public static boolean testMode = false;
 	//testlength controls maximal time of game loop
 	public static long testLength = 100;//Integer.MAX_VALUE;
 
+	public static boolean playerLost = false;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
@@ -37,7 +38,7 @@ public class Main {
 			if(testMode){
 				test();
 			} else {
-				Game.getInstance().gameLoop(fps);
+				Game.getInstance().Level1(fps);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -57,12 +58,31 @@ public class Main {
 	}
 
 	private static void test() throws  InterruptedException {
-		// Here we will do a thread test
+		int testLength = 10;
+		int testIncrements = 10;
+
 		runThreaded = true;
 		runQuadTree = false;
-		for(int i = 1; 10 > i; i++ ) {
-			System.out.println(Game.getInstance().stressTest(i*100));
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
+		}
 
+		runThreaded = true;
+		runQuadTree = true;
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
+		}
+
+		runThreaded = false;
+		runQuadTree = true;
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
+		}
+
+		runThreaded = false;
+		runQuadTree = false;
+		for(int i = 1; testLength > i; i++ ) {
+			System.out.println(Game.getInstance().stressTest(i*testIncrements));
 		}
 
 	}

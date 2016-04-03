@@ -1,29 +1,30 @@
 package entity;
 
 import game.Game;
-import gui.Screen;
 import logger.Log;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Asteroid extends Entity {
 
     private AsteroidSize size;
 
-    private BufferedImage smallSprite;
-    private BufferedImage mediumSprite;
-    private BufferedImage largeSprite;
-
 
     public Asteroid(AsteroidSize size) {
         Game game = Game.getInstance();
-
         try {
-            smallSprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_3.png"));
-            mediumSprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_2.png"));
-            largeSprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_1.png"));
+            switch(size) {
+                case SMALL:
+                    sprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_3.png"));
+                    break;
+                case MEDIUM:
+                    sprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_2.png"));
+                    break;
+                case BIG:
+                    sprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_1.png"));
+                    break;
+            }
         } catch (IOException e) {
             Log.warn(e.getMessage());
         }
@@ -48,8 +49,8 @@ public class Asteroid extends Entity {
                 break;
         }
 
-        int xVel = plusOrMinusX*game.randomInRange(1,10);
-        int yVel = plusOrMinusY*game.randomInRange(1,10);
+        int xVel = plusOrMinusX*game.randomInRange(1,2);
+        int yVel = plusOrMinusY*game.randomInRange(1,2);
 
 
         this.setSpeed(xVel, yVel);
@@ -68,7 +69,6 @@ public class Asteroid extends Entity {
                 return;
         }
 
-        Game game = Game.getInstance();
         Asteroid child1 = new Asteroid(newSize);
         Asteroid child2 = new Asteroid(newSize);
 

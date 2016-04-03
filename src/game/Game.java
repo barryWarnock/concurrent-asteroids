@@ -1,13 +1,18 @@
 package game;
+
+import collision.BruteForceCollision;
 import collision.CollisionChecker;
 import collision.CollisionQuadTree;
+import entity.Asteroid;
+import entity.AsteroidSize;
 import entity.Entity;
 import entity.Player;
 import gui.Screen;
 import main.Main;
-import entity.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Game {
 
@@ -40,6 +45,19 @@ public class Game {
         }
     }
 
+    public void Level1(int fps) throws InterruptedException {
+        for(int i=0; 2 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+        }
+        gameLoop(fps);
+    }
+
+    public void loseLife(){
+        lives--;
+        if(lives == -1){
+            main.playerLost = true;
+        }
+    }
 
     public static Game getInstance(){
         return game;
@@ -69,7 +87,7 @@ public class Game {
         long beginLoop = System.currentTimeMillis();
         while (true){
             frameCount++;
-            if (System.currentTimeMillis() - lastUpdate > (1000/60)) {
+            if (System.currentTimeMillis() - lastUpdate > (1000/fps)) {
 
                 if (Main.runThreaded) {
                     //<----UPDATE SECTION------->
@@ -94,16 +112,26 @@ public class Game {
                 }
             }
 
-            if (System.currentTimeMillis() - lastDraw > (1000/30)) {
+            if (System.currentTimeMillis() - lastDraw > (1000/(fps/2))) {
 
                 //check collision
-                CollisionChecker collision = new CollisionQuadTree(2); //at most 5 entities per node
+                CollisionChecker collision;
+                if(Main.runQuadTree) {
+                    collision = new CollisionQuadTree(5); //at most 5 entities per node
+                } else {
+                    collision = new BruteForceCollision();
+                }
+
                 collision.checkCollisions(entityList);
 
                 Screen screen = Screen.getInstance();
 
                 for (int i = 0; i < entityList.size(); i++) {
                     entityList.get(i).draw(screen);
+                }
+
+                if(playerLost){
+                    onLose();
                 }
 
                 drawUI();
@@ -153,5 +181,10 @@ public class Game {
         }
         avgFrameTime = (Main.testLength/(double)frameCount);
         return avgFrameTime;
+    }
+
+    private void onLose()
+    {
+        JOptionPane.showMessage("You Lost. \nYour score was: " + score);
     }
 }
