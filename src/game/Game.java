@@ -91,7 +91,6 @@ public class Game {
             if (System.currentTimeMillis() - lastUpdate > (1000/fps)) {
 
                 if (Main.runThreaded) {
-                    //<----UPDATE SECTION------->
                     List<Thread> entityThreads = new ArrayList<>();
 
                     for (int i = 0; i < entityList.size(); i++) {
@@ -99,12 +98,10 @@ public class Game {
                         newThread.run();
                         entityThreads.add(newThread);
                     }
-
                     //wait for updates to finish
                     for (Thread t : entityThreads) {
                         t.join();
                     }
-                    //<-----END UPDATE SECTION------->
                     lastUpdate = System.currentTimeMillis();
                 } else {
                     for (int i = 0; i < entityList.size(); i++) {
@@ -112,7 +109,6 @@ public class Game {
                     }
                 }
             }
-
             if (System.currentTimeMillis() - lastDraw > (1000/(fps/2))) {
 
                 //check collision

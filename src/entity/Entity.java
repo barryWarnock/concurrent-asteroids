@@ -6,7 +6,6 @@ import gui.Screen;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Runnable;
 
 //TODO make entities wrap the screen.
 public abstract class Entity implements Runnable {
@@ -23,6 +22,7 @@ public abstract class Entity implements Runnable {
 	protected BufferedImage sprite;
 
     protected List<Entity> collisions;
+	protected boolean collided = false;
 
 	public Entity() {
 		xPos = 0;
@@ -49,14 +49,18 @@ public abstract class Entity implements Runnable {
     }
 
     public boolean checkCollision(Entity other) {
-        boolean doesCollide = false;
+
+		if(other.getClass() == this.getClass()) {
+			return false; //Do not update the collided variable
+		}
 
         if (((Math.abs(this.xPos - other.get_x()) * 2) < (this.width + other.get_width())) &&
            ((Math.abs(this.yPos - other.get_y()) * 2) < (this.height + other.get_height()))) {
-            doesCollide = true;
+            collided = true;
+			return collided;
         }
 
-        return doesCollide;
+        return false;
     }
 
     public void reportCollision(Entity collided) {
@@ -118,6 +122,10 @@ public abstract class Entity implements Runnable {
 
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
+
+		if(collided) {
+			die();
+		}
     }
 
     /**

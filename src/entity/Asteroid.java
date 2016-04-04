@@ -31,8 +31,8 @@ public class Asteroid extends Entity {
         //TODO cleanup this bad engineering
 
         this.size = size;
-        int plusOrMinusX = (game.randomBool()) ? (1) : (-1);
-        int plusOrMinusY = (game.randomBool()) ? (1) : (-1);
+        double plusOrMinusX = (game.randomBool()) ? (1) : (-1);
+        double plusOrMinusY = (game.randomBool()) ? (1) : (-1);
 
         switch (size) {
             case BIG:
@@ -40,18 +40,17 @@ public class Asteroid extends Entity {
                 plusOrMinusY *= 1;
                 break;
             case MEDIUM:
-                plusOrMinusX *= 2;
-                plusOrMinusY *= 2;
-                break;
             case SMALL:
-                plusOrMinusX *= 3;
-                plusOrMinusY *= 3;
+                plusOrMinusX *= 1.33;
+                plusOrMinusY *= 1.33;
                 break;
         }
 
-        int xVel = plusOrMinusX*game.randomInRange(1,2);
-        int yVel = plusOrMinusY*game.randomInRange(1,2);
+        int xVel = (int)(plusOrMinusX*game.randomInRange(1,2));
+        int yVel = (int)(plusOrMinusY*game.randomInRange(1,2));
 
+        height = sprite.getHeight();
+        width = sprite.getWidth();
 
         this.setSpeed(xVel, yVel);
     }
@@ -73,22 +72,23 @@ public class Asteroid extends Entity {
         Asteroid child2 = new Asteroid(newSize);
 
         child1.spawnAtParent(this);
+        Game.getInstance().addEntity(child1);
         child2.spawnAtParent(this);
+        Game.getInstance().addEntity(child2);
     }
 
     @Override
     public void die() {
-        Game game = Game.getInstance();
         split();
-        game.removeEntity(this);
+        Game.getInstance().removeEntity(this);
         //play death animation
         //TODO
     }
 
     public void spawnAtParent(Asteroid parent) {
         Game game = Game.getInstance();
-        int xOffset = game.randomInRange(1,5);
-        int yOffset = game.randomInRange(1,5);
+        int xOffset = game.randomInRange(1,3);
+        int yOffset = game.randomInRange(1,3);
         xPos = (game.randomBool()) ? (parent.get_x() - xOffset) : (parent.get_x() + xOffset);
         yPos = (game.randomBool()) ? (parent.get_y() - yOffset) : (parent.get_y() + yOffset);
     }

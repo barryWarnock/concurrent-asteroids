@@ -1,7 +1,6 @@
 package entity;
 
 import game.Game;
-import main.Main;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -55,8 +54,7 @@ public class Bullet extends Entity{
     @Override
     public void die() {
 
-        Game game = Game.getInstance();
-        game.removeEntity(this);
+        Game.getInstance().removeEntity(this);
         currentBullets--;
 
     }
