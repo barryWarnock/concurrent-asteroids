@@ -59,21 +59,11 @@ public class Main {
 	private static void test() throws InterruptedException {
 		int testLength = 10;
 		int testIncrements = 10;
+		int thresholdMax = 10;
+		int thresholdIncrement = 1;
 
 		runThreaded = true;
 		runQuadTree = false;
-		for(int i = 1; testLength > i; i++ ) {
-			System.out.println(Game.getInstance().stressTest(i*testIncrements));
-		}
-
-		runThreaded = true;
-		runQuadTree = true;
-		for(int i = 1; testLength > i; i++ ) {
-			System.out.println(Game.getInstance().stressTest(i*testIncrements));
-		}
-
-		runThreaded = false;
-		runQuadTree = true;
 		for(int i = 1; testLength > i; i++ ) {
 			System.out.println(Game.getInstance().stressTest(i*testIncrements));
 		}
@@ -84,5 +74,18 @@ public class Main {
 			System.out.println(Game.getInstance().stressTest(i*testIncrements));
 		}
 
+		runQuadTree = true;
+		for(int j=2; thresholdMax > j; j+= thresholdIncrement) {
+			quadTreeThreshold = j;
+			runThreaded = true;
+
+			for(int i = 1; testLength > i; i++ ) {
+				System.out.println(Game.getInstance().stressTest(i*testIncrements));
+			}
+			runThreaded = false;
+			for(int i = 1; testLength > i; i++ ) {
+				System.out.println(Game.getInstance().stressTest(i*testIncrements));
+			}
+		}
 	}
 }
