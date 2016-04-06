@@ -6,9 +6,7 @@ import gui.Screen;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.Runnable;
 
-//TODO make entities wrap the screen.
 public abstract class Entity implements Runnable {
 	
 	protected double xPos;
@@ -23,6 +21,7 @@ public abstract class Entity implements Runnable {
 	protected BufferedImage sprite;
 
     protected List<Entity> collisions;
+	protected boolean collided = false;
 
 	public Entity() {
 		xPos = 0;
@@ -33,79 +32,65 @@ public abstract class Entity implements Runnable {
         collisions = new ArrayList<>();
 	}
 
-    public void setPos(int x, int y) {
-        this.xPos = x;
-        this.yPos = y;
-    }
-
-    public void setSpeed(int xVel, int yVel) {
-        this.xSpeed = xVel;
-        this.ySpeed = yVel;
-    }
 
 	@Override
     public void run() {
         update();
     }
 
-    public boolean checkCollision(Entity other) {
-        boolean doesCollide = false;
-
-        if (((Math.abs(this.xPos - other.get_x()) * 2) < (this.width + other.get_width())) &&
-           ((Math.abs(this.yPos - other.get_y()) * 2) < (this.height + other.get_height()))) {
-            doesCollide = true;
-        }
-
-        return doesCollide;
+    public void checkCollision(Entity other) {
+		collisions.add(other);
     }
 
-    public void reportCollision(Entity collided) {
-        collisions.add(collided);
-    }
+	protected void checkCollision2(Entity other) {
+		if (other.getClass() == this.getClass()) {
+		} else if (
+			(xPos < other.get_x() &&
+			(xPos + width) > other.get_x())
+			||
+			(other.get_x() < xPos &&
+			(other.get_x() + other.get_width()) > xPos)) {
+			if ( //We know at this point the x/width overlaps
+				(yPos < other.get_y() &&
+				(yPos + height) > other.get_y())
+				||
+				(other.get_y() < yPos &&
+				(other.get_y() + other.get_height()) > yPos)) {
+					collided = true;
+					other.set_collided(true);
+				}
+			}
+	}
 
-    public void clearCollisions() {
-        collisions = new ArrayList<>();
-    }
-
-	/*
-	as a temporary fix to the coordinate weirdness im switching these to return their opposites
-	 */
+	protected boolean checkAllCollisions() {
+		for(int i=0; collisions.size() > i; i++) {
+			checkCollision2(collisions.get(i));
+		}
+		return collided;
+	}
 	public double get_x() {
-		return yPos;
-	}
-
-	public void set_x(double xPos) {
-		this.xPos = xPos;
-	}
-
-	public double get_y() {
 		return xPos;
 	}
 
-	public void set_y(double yPos) {
-		this.yPos = yPos;
+	public double get_y() {
+		return yPos;
 	}
 
 	public int get_width() {
-		return height;
-	}
-
-	public void set_width(int width) {
-		this.width = width;
-	}
-
-	public int get_height() {
 		return width;
 	}
 
-	public void set_height(int height) {
-		this.height = height;
+	public int get_height() {
+		return height;
 	}
+
+	public void set_collided(boolean collided) { this.collided = collided; }
 
     /**
      * updates the entities position
      */
     public void update() {
+		checkAllCollisions();
         xPos += xSpeed;
         yPos += ySpeed;
 
@@ -118,6 +103,11 @@ public abstract class Entity implements Runnable {
 
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
+
+		if(collided) {
+			die();
+		}
+		collided = false;
     }
 
     /**

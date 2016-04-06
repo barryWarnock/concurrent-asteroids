@@ -1,7 +1,6 @@
 package entity;
 
 import game.Game;
-import main.Main;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.io.IOException;
 public class Bullet extends Entity{
 
     private int age;
+    private boolean playerSpawned;
 
     private final int bulletLife=50;
     private final int bulletSpeed=7;
@@ -23,10 +23,18 @@ public class Bullet extends Entity{
         return currentBullets;
     }
 
-    public static void fireBullet(){
-        currentBullets++;
+    public void setPlayerSpawned(boolean playerSpawned) {
+        this.playerSpawned = playerSpawned;
     }
 
+
+    /**
+     *
+     * @param xSpeed x speed of bullet
+     * @param ySpeed y speed of bullet
+     * @param xPos x position of the bullet
+     * @param yPos y position of the bullet
+     */
     public Bullet(double xSpeed, double ySpeed, double xPos, double yPos) {
         Game.getInstance().addEntity(this);
         this.ySpeed = ySpeed*bulletSpeed;
@@ -40,7 +48,8 @@ public class Bullet extends Entity{
         } catch (IOException e) {
             logger.Log.warn(e.getMessage());
         }
-
+        currentBullets++;
+        playerSpawned = false;
     }
 
     @Override
@@ -54,10 +63,14 @@ public class Bullet extends Entity{
 
     @Override
     public void die() {
-
-        Game game = Game.getInstance();
-        game.removeEntity(this);
+        Game.getInstance().removeEntity(this);
         currentBullets--;
+    }
 
+    @Override
+    public void checkCollision2(Entity other) {
+        if(other.getClass() != Player.class) {
+            super.checkCollision2(other);
+        }
     }
 }

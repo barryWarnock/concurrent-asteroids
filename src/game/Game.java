@@ -12,8 +12,10 @@ import main.Main;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Game {
 
@@ -83,42 +85,42 @@ public class Game {
      */
     public void gameLoop(int fps) throws InterruptedException {
         long lastUpdate = 0;
-        long lastDraw   = 0;
-
-        long beginLoop = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
+        gameLoop:
         while (true){
             frameCount++;
-            if (System.currentTimeMillis() - lastUpdate > (1000/fps)) {
+            if (Main.testMode || System.currentTimeMillis() - lastUpdate > (1000/fps)) {
 
                 if (Main.runThreaded) {
-                    //<----UPDATE SECTION------->
-                    List<Thread> entityThreads = new ArrayList<>();
 
-                    for (int i = 0; i < entityList.size(); i++) {
-                        Thread newThread = new Thread(entityList.get(i));
-                        newThread.run();
-                        entityThreads.add(newThread);
+                    ExecutorService executor =
+                            Executors.newFixedThreadPool(4);
+                    for (int i=0; entityList.size() > i; i++) {
+                        executor.execute(entityList.get(i));
                     }
-
-                    //wait for updates to finish
-                    for (Thread t : entityThreads) {
-                        t.join();
-                    }
-                    //<-----END UPDATE SECTION------->
-                    lastUpdate = System.currentTimeMillis();
+                    executor.shutdown();
+                    executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+//                    List<Thread> entityThreads = new ArrayList<>();
+//
+//                    for (int i=0; entityList.size() > i; i++) {
+//                        Thread newThread = new Thread(entityList.get(i));
+//                        newThread.run();
+//                        entityThreads.add(newThread);
+//                    }
+//                    //wait for updates to finish
+//                    for (Thread t : entityThreads) {
+//                        t.join();
+//                    }
                 } else {
-                    for (int i = 0; i < entityList.size(); i++) {
+                    for (int i=0; entityList.size() > i; i++) {
                         entityList.get(i).update();
                     }
                 }
-            }
-
-            if (System.currentTimeMillis() - lastDraw > (1000/(fps/2))) {
 
                 //check collision
                 CollisionChecker collision;
                 if(Main.runQuadTree) {
-                    collision = new CollisionQuadTree(5); //at most 5 entities per node
+                    collision = new CollisionQuadTree(Main.quadTreeThreshold);
                 } else {
                     collision = new BruteForceCollision();
                 }
@@ -127,24 +129,29 @@ public class Game {
 
                 Screen screen = Screen.getInstance();
 
-                for (int i = 0; i < entityList.size(); i++) {
+                for (int i=0; entityList.size() > i; i++) {
                     entityList.get(i).draw(screen);
                 }
-
                 if(Main.playerLost){
                     onLose();
                 }
-
                 drawUI();
-
-            /*
-            This next line flips the backBuffer. It is crucial
-            that this is done some small amount of time after
-            the last draw call to the back buffer to prevent
-            stuttering.
-             */
+                lastUpdate = System.currentTimeMillis();
+                if(Main.testMode && lastUpdate - startTime > Main.testDuration) {
+                    break gameLoop;
+                }
+                if(Main.testMode) {
+                    continue gameLoop; /*this prevents redraws which are slow and could
+                                        * effect performance in tests
+                                        */
+                }
+                /*
+                This next line flips the backBuffer. It is crucial
+                that this is done some small amount of time after
+                the last draw call to the back buffer to prevent
+                stuttering.
+                 */
                 Screen.getInstance().repaint();
-                lastDraw = System.currentTimeMillis();
             }
         }
     }
@@ -171,7 +178,8 @@ public class Game {
         return rand.nextBoolean();
     }
 
-    public double stressTest(int elements){
+    public double stressTest(int elements) throws InterruptedException {
+        entityList = new ArrayList<>(elements);
         double avgFrameTime;
         frameCount = 0;
 
@@ -180,7 +188,8 @@ public class Game {
             entityList.add(new Asteroid(AsteroidSize.BIG));
             elements--;
         }
-        avgFrameTime = (Main.testLength/(double)frameCount);
+        gameLoop(0);
+        avgFrameTime = (Main.testDuration/(double)frameCount);
         return avgFrameTime;
     }
 

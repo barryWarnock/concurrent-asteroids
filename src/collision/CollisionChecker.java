@@ -2,12 +2,12 @@ package collision;
 
 import entity.Entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface CollisionChecker {
     /**
      * checks a set of entities for collision
      * @param entities the entities to check
      */
-    public void checkCollisions(ArrayList<Entity> entities);
+    void checkCollisions(List<Entity> entities);
 }
