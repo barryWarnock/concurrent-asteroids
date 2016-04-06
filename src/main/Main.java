@@ -18,13 +18,11 @@ public class Main {
 	private static int width = 500;
 	private static int height = 500;
 	private static int fps = 60;
-	public static boolean runThreaded = false;
+	public static boolean runThreaded = true;
 	public static boolean runQuadTree = true;
 	public static boolean testMode = false;
-	//testlength controls maximal time of game loop
-	public static long testLength = 100;//Integer.MAX_VALUE;
-
 	public static boolean playerLost = false;
+	public static long testDuration = 100;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;
@@ -57,7 +55,7 @@ public class Main {
 		mainFrame.setVisible(true);
 	}
 
-	private static void test() throws  InterruptedException {
+	private static void test() throws InterruptedException {
 		int testLength = 10;
 		int testIncrements = 10;
 

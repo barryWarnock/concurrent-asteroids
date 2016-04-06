@@ -83,9 +83,11 @@ public class Game {
      */
     public void gameLoop(int fps) throws InterruptedException {
         long lastUpdate = 0;
+        long startTime = System.currentTimeMillis();
+        gameLoop:
         while (true){
             frameCount++;
-            if (System.currentTimeMillis() - lastUpdate > (1000/fps)) {
+            if (Main.testMode || System.currentTimeMillis() - lastUpdate > (1000/fps)) {
 
                 if (Main.runThreaded) {
                     List<Thread> entityThreads = new ArrayList<>();
@@ -99,7 +101,6 @@ public class Game {
                     for (Thread t : entityThreads) {
                         t.join();
                     }
-                    lastUpdate = System.currentTimeMillis();
                 } else {
                     for (int i=0; entityList.size() > i; i++) {
                         entityList.get(i).update();
@@ -127,13 +128,21 @@ public class Game {
                 }
 
                 drawUI();
-
-            /*
-            This next line flips the backBuffer. It is crucial
-            that this is done some small amount of time after
-            the last draw call to the back buffer to prevent
-            stuttering.
-             */
+                lastUpdate = System.currentTimeMillis();
+                if(Main.testMode && lastUpdate - startTime > Main.testDuration) {
+                    break gameLoop;
+                }
+                if(Main.testMode) {
+                    continue gameLoop; /*this prevents redraws which are slow and could
+                                        * effect performance in tests
+                                        */
+                }
+                /*
+                This next line flips the backBuffer. It is crucial
+                that this is done some small amount of time after
+                the last draw call to the back buffer to prevent
+                stuttering.
+                 */
                 Screen.getInstance().repaint();
             }
         }
@@ -161,7 +170,7 @@ public class Game {
         return rand.nextBoolean();
     }
 
-    public double stressTest(int elements){
+    public double stressTest(int elements) throws InterruptedException {
         double avgFrameTime;
         frameCount = 0;
 
@@ -170,7 +179,8 @@ public class Game {
             entityList.add(new Asteroid(AsteroidSize.BIG));
             elements--;
         }
-        avgFrameTime = (Main.testLength/(double)frameCount);
+        gameLoop(0);
+        avgFrameTime = (Main.testDuration/(double)frameCount);
         return avgFrameTime;
     }
 
