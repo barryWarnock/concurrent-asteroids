@@ -38,34 +38,56 @@ public abstract class Entity implements Runnable {
         update();
     }
 
-    public boolean checkCollision(Entity other) {
+    public void checkCollision(Entity other) {
 
-		if(other.getClass() == this.getClass()) {
-			return false; //Do not update the collided variable
-		}
-
-		if(
-			(xPos < other.get_x() &&
-			(xPos + width) > other.get_x())
-			||
-			(other.get_x() < xPos &&
-			(other.get_x() + other.get_width()) > xPos)) {
-			if( //We know at this point the x/width overlaps
-				(yPos < other.get_y() &&
-				(yPos + height) > other.get_y())
-				||
-				(other.get_y() < yPos &&
-				(other.get_y() + other.get_height()) > yPos)) {
-				collided = true;
-				return collided;
-			}
-		}
-        return false;
+		collisions.add(other);
+//		if(other.getClass() == this.getClass()) {
+//			return false; //Do not update the collided variable
+//		}
+//
+//		if(
+//			(xPos < other.get_x() &&
+//			(xPos + width) > other.get_x())
+//			||
+//			(other.get_x() < xPos &&
+//			(other.get_x() + other.get_width()) > xPos)) {
+//			if( //We know at this point the x/width overlaps
+//				(yPos < other.get_y() &&
+//				(yPos + height) > other.get_y())
+//				||
+//				(other.get_y() < yPos &&
+//				(other.get_y() + other.get_height()) > yPos)) {
+//				collided = true;
+//				return collided;
+//			}
+//		}
+//        return false;
     }
+	protected void checkCollision2(Entity other) {
+		if (other.getClass() == this.getClass()) {
+		} else if (
+					(xPos < other.get_x() &&
+							(xPos + width) > other.get_x())
+							||
+							(other.get_x() < xPos &&
+									(other.get_x() + other.get_width()) > xPos)) {
+				if ( //We know at this point the x/width overlaps
+						(yPos < other.get_y() &&
+								(yPos + height) > other.get_y())
+								||
+								(other.get_y() < yPos &&
+										(other.get_y() + other.get_height()) > yPos)) {
+					collided = true;
+				}
+			}
+	}
 
-	/*
-	as a temporary fix to the coordinate weirdness im switching these to return their opposites
-	 */
+	protected boolean checkAllCollisions() {
+		for(int i=0; collisions.size() > i; i++) {
+			checkCollision2(collisions.get(i));
+		}
+		return collided;
+	}
 	public double get_x() {
 		return xPos;
 	}
@@ -86,6 +108,7 @@ public abstract class Entity implements Runnable {
      * updates the entities position
      */
     public void update() {
+		collided = false;
         xPos += xSpeed;
         yPos += ySpeed;
 
@@ -99,7 +122,7 @@ public abstract class Entity implements Runnable {
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
 
-		if(collided) {
+		if(checkAllCollisions()) {
 			die();
 		}
     }

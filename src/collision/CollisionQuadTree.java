@@ -215,10 +215,11 @@ class QuadTreeNode {
                 Iterator<Entity> others = restOfList;
                 while (others.hasNext()) {
                     Entity other = others.next();
-                    if (other.checkCollision(current)) {
+                    other.checkCollision(current);
+//                    if (other.checkCollision(current)) {
 //                        other.reportCollision(current);
 //                        current.reportCollision(other);
-                    }
+//                    }
                 }
             } while (restOfList.hasNext());
         }
@@ -231,10 +232,11 @@ class QuadTreeNode {
                 Entity current = mine.next();
                 while (parents.hasNext()) {
                     Entity other = parents.next();
-                    if (other.checkCollision(current)) {
+                    other.checkCollision(current);
+//                    if (other.checkCollision(current)) {
 //                        other.reportCollision(current);
 //                        current.reportCollision(other);
-                    }
+//                    }
                 }
             }
         }

@@ -8,6 +8,7 @@ import java.io.IOException;
 public class Bullet extends Entity{
 
     private int age;
+    private boolean playerSpawned;
 
     private final int bulletLife=50;
     private final int bulletSpeed=7;
@@ -20,6 +21,10 @@ public class Bullet extends Entity{
 
     public static int getCurrentBullets(){
         return currentBullets;
+    }
+
+    public void setPlayerSpawned(boolean playerSpawned) {
+        this.playerSpawned = playerSpawned;
     }
 
 
@@ -44,6 +49,7 @@ public class Bullet extends Entity{
             logger.Log.warn(e.getMessage());
         }
         currentBullets++;
+        playerSpawned = false;
     }
 
     @Override
@@ -59,5 +65,13 @@ public class Bullet extends Entity{
     public void die() {
         Game.getInstance().removeEntity(this);
         currentBullets--;
+    }
+
+    @Override
+    public void checkCollision2(Entity other) {
+        if(other.getClass() != Player.class) {
+            super.checkCollision2(other);
+        }
+
     }
 }

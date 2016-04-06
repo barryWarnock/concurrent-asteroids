@@ -40,9 +40,12 @@ public class Asteroid extends Entity {
                 plusOrMinusY *= .5;
                 break;
             case MEDIUM:
+                plusOrMinusX *= .6;
+                plusOrMinusY *= .6;
+                break;
             case SMALL:
-                plusOrMinusX *= 1.1;
-                plusOrMinusY *= 1.1;
+                plusOrMinusX *= .7;
+                plusOrMinusY *= .7;
                 break;
         }
 
