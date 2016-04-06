@@ -3,16 +3,13 @@ package collision;
 import entity.Entity;
 import game.Game;
 import gui.Screen;
-import logger.Log;
-
-import java.awt.Color;
-
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class CollisionQuadTree implements CollisionChecker {
 
@@ -21,15 +18,15 @@ public class CollisionQuadTree implements CollisionChecker {
         QuadTreeNode.set_splitThreshold(splitThreshold);
     }
 
-    public void checkCollisions(ArrayList<Entity> entities) {
+    public void checkCollisions(List<Entity> entities) {
         Game game = Game.getInstance();
         int width = game.getScreenWidth();
         int height = game.getScreenHeight();
 
         QuadTreeNode tree = new QuadTreeNode(0, 0, width, height);
 
-        for (int i = 0; i < entities.size(); i++) {
-            tree.insert(entities.get(i));
+        for (Entity entity : entities) {
+            tree.insert(entity);
         }
 
         tree.check_collisions();
@@ -122,7 +119,7 @@ class QuadTreeNode {
         double eWidth  = e.get_width();
         double eHeight = e.get_height();
 
-        QuadTreeIntersect intersectType = intersectType = QuadTreeIntersect.NONE;;
+        QuadTreeIntersect intersectType = QuadTreeIntersect.NONE;;
 
         //check for partial
         if (!(this.x > eX+eWidth || this.x+this.width < eX || this.y > eY+eHeight || this.y+this.height < eY)) {
@@ -219,8 +216,8 @@ class QuadTreeNode {
                 while (others.hasNext()) {
                     Entity other = others.next();
                     if (other.checkCollision(current)) {
-                        other.reportCollision(current);
-                        current.reportCollision(other);
+//                        other.reportCollision(current);
+//                        current.reportCollision(other);
                     }
                 }
             } while (restOfList.hasNext());
@@ -235,8 +232,8 @@ class QuadTreeNode {
                 while (parents.hasNext()) {
                     Entity other = parents.next();
                     if (other.checkCollision(current)) {
-                        other.reportCollision(current);
-                        current.reportCollision(other);
+//                        other.reportCollision(current);
+//                        current.reportCollision(other);
                     }
                 }
             }

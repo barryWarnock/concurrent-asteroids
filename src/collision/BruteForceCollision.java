@@ -2,31 +2,14 @@ package collision;
 
 import entity.Entity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import entity.Entity;
+import java.util.List;
 
 public class BruteForceCollision implements CollisionChecker {
 
-    public void checkCollisions(ArrayList<Entity> entityList) {
-        Iterator<Entity> entities = entityList.iterator();
-
-        while(entities.hasNext()) {
-            Iterator<Entity> tempList = entityList.iterator();
-            Entity ent1 = entities.next();
-
-            while(tempList.hasNext()) {
-                Entity ent2 = tempList.next();
-
-                if(ent1.get_x() < ent2.get_x()) {
-                    if( (ent1.get_x() + ent1.get_width()) >= ent2.get_x()) {
-                        if(ent1.get_y() < ent2.get_y()) {
-                            if( (ent1.get_y() + ent1.get_height()) >= ent2.get_y()) {
-                                ent1.checkCollision(ent2);
-                            }
-                        }
-                    }
-                }
+    public void checkCollisions(List<Entity> entityList) {
+        for (Entity entity1: entityList) {
+            for (Entity entity2: entityList) {
+                entity1.checkCollision(entity2);
             }
         }
     }

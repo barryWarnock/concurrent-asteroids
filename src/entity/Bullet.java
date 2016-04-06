@@ -22,10 +22,14 @@ public class Bullet extends Entity{
         return currentBullets;
     }
 
-    public static void fireBullet(){
-        currentBullets++;
-    }
 
+    /**
+     *
+     * @param xSpeed x speed of bullet
+     * @param ySpeed y speed of bullet
+     * @param xPos x position of the bullet
+     * @param yPos y position of the bullet
+     */
     public Bullet(double xSpeed, double ySpeed, double xPos, double yPos) {
         Game.getInstance().addEntity(this);
         this.ySpeed = ySpeed*bulletSpeed;
@@ -39,7 +43,7 @@ public class Bullet extends Entity{
         } catch (IOException e) {
             logger.Log.warn(e.getMessage());
         }
-
+        currentBullets++;
     }
 
     @Override
@@ -53,9 +57,7 @@ public class Bullet extends Entity{
 
     @Override
     public void die() {
-
         Game.getInstance().removeEntity(this);
         currentBullets--;
-
     }
 }

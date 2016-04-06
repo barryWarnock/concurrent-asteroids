@@ -33,15 +33,6 @@ public abstract class Entity implements Runnable {
         collisions = new ArrayList<>();
 	}
 
-    public void setPos(int x, int y) {
-        this.xPos = x;
-        this.yPos = y;
-    }
-
-    public void setSpeed(int xVel, int yVel) {
-        this.xSpeed = xVel;
-        this.ySpeed = yVel;
-    }
 
 	@Override
     public void run() {
@@ -54,21 +45,23 @@ public abstract class Entity implements Runnable {
 			return false; //Do not update the collided variable
 		}
 
-        if (((Math.abs(this.xPos - other.get_x()) * 2) < (this.width + other.get_width())) &&
-           ((Math.abs(this.yPos - other.get_y()) * 2) < (this.height + other.get_height()))) {
-            collided = true;
-			return collided;
-        }
-
+		if(
+			(xPos < other.get_x() &&
+			(xPos + width) > other.get_x())
+			||
+			(other.get_x() < xPos &&
+			(other.get_x() + other.get_width()) > xPos)) {
+			if( //We know at this point the x/width overlaps
+				(yPos < other.get_y() &&
+				(yPos + height) > other.get_y())
+				||
+				(other.get_y() < yPos &&
+				(other.get_y() + other.get_height()) > yPos)) {
+				collided = true;
+				return collided;
+			}
+		}
         return false;
-    }
-
-    public void reportCollision(Entity collided) {
-        collisions.add(collided);
-    }
-
-    public void clearCollisions() {
-        collisions = new ArrayList<>();
     }
 
 	/*
@@ -78,32 +71,16 @@ public abstract class Entity implements Runnable {
 		return yPos;
 	}
 
-	public void set_x(double xPos) {
-		this.xPos = xPos;
-	}
-
 	public double get_y() {
 		return xPos;
-	}
-
-	public void set_y(double yPos) {
-		this.yPos = yPos;
 	}
 
 	public int get_width() {
 		return height;
 	}
 
-	public void set_width(int width) {
-		this.width = width;
-	}
-
 	public int get_height() {
 		return width;
-	}
-
-	public void set_height(int height) {
-		this.height = height;
 	}
 
     /**

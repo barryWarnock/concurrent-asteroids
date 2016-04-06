@@ -83,7 +83,6 @@ public class Game {
      */
     public void gameLoop(int fps) throws InterruptedException {
         long lastUpdate = 0;
-        long lastDraw   = 0;
 
         long beginLoop = System.currentTimeMillis();
         while (true){
@@ -108,8 +107,6 @@ public class Game {
                         entityList.get(i).update();
                     }
                 }
-            }
-            if (System.currentTimeMillis() - lastDraw > (1000/(fps/2))) {
 
                 //check collision
                 CollisionChecker collision;
@@ -140,7 +137,6 @@ public class Game {
             stuttering.
              */
                 Screen.getInstance().repaint();
-                lastDraw = System.currentTimeMillis();
             }
         }
     }

@@ -36,23 +36,21 @@ public class Asteroid extends Entity {
 
         switch (size) {
             case BIG:
-                plusOrMinusX *= 1;
-                plusOrMinusY *= 1;
+                plusOrMinusX *= .5;
+                plusOrMinusY *= .5;
                 break;
             case MEDIUM:
             case SMALL:
-                plusOrMinusX *= 1.33;
-                plusOrMinusY *= 1.33;
+                plusOrMinusX *= 1.1;
+                plusOrMinusY *= 1.1;
                 break;
         }
 
-        int xVel = (int)(plusOrMinusX*game.randomInRange(1,2));
-        int yVel = (int)(plusOrMinusY*game.randomInRange(1,2));
+        xSpeed = (plusOrMinusX*game.randomInRange(1,2));
+        ySpeed = (plusOrMinusY*game.randomInRange(1,2));
 
         height = sprite.getHeight();
         width = sprite.getWidth();
-
-        this.setSpeed(xVel, yVel);
     }
 
     private void split() {
@@ -86,11 +84,8 @@ public class Asteroid extends Entity {
     }
 
     public void spawnAtParent(Asteroid parent) {
-        Game game = Game.getInstance();
-        int xOffset = game.randomInRange(1,3);
-        int yOffset = game.randomInRange(1,3);
-        xPos = (game.randomBool()) ? (parent.get_x() - xOffset) : (parent.get_x() + xOffset);
-        yPos = (game.randomBool()) ? (parent.get_y() - yOffset) : (parent.get_y() + yOffset);
+        xPos = parent.get_x();
+        yPos = parent.get_y();
     }
 }
 

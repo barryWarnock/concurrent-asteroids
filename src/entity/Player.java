@@ -1,6 +1,5 @@
 package entity;
 
-import game.Game;
 import gui.Screen;
 import logger.Log;
 
@@ -53,8 +52,8 @@ public class Player extends Entity {
 
 		if(accelerating) {
 			int theta = degOfRotation % 360;
-			xSpeed += (Math.sin(Math.toRadians(theta - 90)) * linearSpeedChange);
-			ySpeed += (Math.cos(Math.toRadians(theta - 90)) * linearSpeedChange);
+			xSpeed += (Math.cos(Math.toRadians(theta - 90)) * linearSpeedChange);
+			ySpeed += (Math.sin(Math.toRadians(theta - 90)) * linearSpeedChange);
 			sprite = movingSprite;
 
 			/*
@@ -180,10 +179,10 @@ public class Player extends Entity {
 	 */
 	private void shoot() {
 		if (Bullet.getCurrentBullets() != Bullet.getMaxBullets()) {
-			new Bullet((Math.sin(Math.toRadians(degOfRotation - 90))),
+			new Bullet(
 					(Math.cos(Math.toRadians(degOfRotation - 90))),
-					xPos + 9, yPos + 18);
-			Bullet.fireBullet();
+					(Math.sin(Math.toRadians(degOfRotation - 90))),
+					xPos, yPos);
 		}
 	}
 }
