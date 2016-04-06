@@ -39,45 +39,24 @@ public abstract class Entity implements Runnable {
     }
 
     public void checkCollision(Entity other) {
-
 		collisions.add(other);
-//		if(other.getClass() == this.getClass()) {
-//			return false; //Do not update the collided variable
-//		}
-//
-//		if(
-//			(xPos < other.get_x() &&
-//			(xPos + width) > other.get_x())
-//			||
-//			(other.get_x() < xPos &&
-//			(other.get_x() + other.get_width()) > xPos)) {
-//			if( //We know at this point the x/width overlaps
-//				(yPos < other.get_y() &&
-//				(yPos + height) > other.get_y())
-//				||
-//				(other.get_y() < yPos &&
-//				(other.get_y() + other.get_height()) > yPos)) {
-//				collided = true;
-//				return collided;
-//			}
-//		}
-//        return false;
     }
 	protected void checkCollision2(Entity other) {
 		if (other.getClass() == this.getClass()) {
 		} else if (
-					(xPos < other.get_x() &&
-							(xPos + width) > other.get_x())
-							||
-							(other.get_x() < xPos &&
-									(other.get_x() + other.get_width()) > xPos)) {
-				if ( //We know at this point the x/width overlaps
-						(yPos < other.get_y() &&
-								(yPos + height) > other.get_y())
-								||
-								(other.get_y() < yPos &&
-										(other.get_y() + other.get_height()) > yPos)) {
+			(xPos < other.get_x() &&
+			(xPos + width) > other.get_x())
+			||
+			(other.get_x() < xPos &&
+			(other.get_x() + other.get_width()) > xPos)) {
+			if ( //We know at this point the x/width overlaps
+				(yPos < other.get_y() &&
+				(yPos + height) > other.get_y())
+				||
+				(other.get_y() < yPos &&
+				(other.get_y() + other.get_height()) > yPos)) {
 					collided = true;
+					other.set_collided(true);
 				}
 			}
 	}
@@ -104,11 +83,12 @@ public abstract class Entity implements Runnable {
 		return height;
 	}
 
+	public void set_collided(boolean collided) { this.collided = collided; }
+
     /**
      * updates the entities position
      */
     public void update() {
-		collided = false;
         xPos += xSpeed;
         yPos += ySpeed;
 
@@ -122,9 +102,10 @@ public abstract class Entity implements Runnable {
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
 
-		if(checkAllCollisions()) {
+		if(collided || checkAllCollisions()) {
 			die();
 		}
+		collided = false;
     }
 
     /**

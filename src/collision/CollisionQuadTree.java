@@ -25,8 +25,8 @@ public class CollisionQuadTree implements CollisionChecker {
 
         QuadTreeNode tree = new QuadTreeNode(0, 0, width, height);
 
-        for (Entity entity : entities) {
-            tree.insert(entity);
+        for(int i=0; entities.size() > i; i++) {
+            tree.insert(entities.get(i));
         }
 
         tree.check_collisions();
