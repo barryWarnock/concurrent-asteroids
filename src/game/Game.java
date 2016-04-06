@@ -83,8 +83,6 @@ public class Game {
      */
     public void gameLoop(int fps) throws InterruptedException {
         long lastUpdate = 0;
-
-        long beginLoop = System.currentTimeMillis();
         while (true){
             frameCount++;
             if (System.currentTimeMillis() - lastUpdate > (1000/fps)) {
@@ -92,7 +90,7 @@ public class Game {
                 if (Main.runThreaded) {
                     List<Thread> entityThreads = new ArrayList<>();
 
-                    for (int i = 0; i < entityList.size(); i++) {
+                    for (int i=0; entityList.size() > i; i++) {
                         Thread newThread = new Thread(entityList.get(i));
                         newThread.run();
                         entityThreads.add(newThread);
@@ -103,7 +101,7 @@ public class Game {
                     }
                     lastUpdate = System.currentTimeMillis();
                 } else {
-                    for (int i = 0; i < entityList.size(); i++) {
+                    for (int i=0; entityList.size() > i; i++) {
                         entityList.get(i).update();
                     }
                 }
@@ -120,7 +118,7 @@ public class Game {
 
                 Screen screen = Screen.getInstance();
 
-                for (int i = 0; i < entityList.size(); i++) {
+                for (int i=0; entityList.size() > i; i++) {
                     entityList.get(i).draw(screen);
                 }
 

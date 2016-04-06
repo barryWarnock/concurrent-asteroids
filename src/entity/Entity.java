@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO make entities wrap the screen.
 public abstract class Entity implements Runnable {
 	
 	protected double xPos;
@@ -68,19 +67,19 @@ public abstract class Entity implements Runnable {
 	as a temporary fix to the coordinate weirdness im switching these to return their opposites
 	 */
 	public double get_x() {
-		return yPos;
-	}
-
-	public double get_y() {
 		return xPos;
 	}
 
+	public double get_y() {
+		return yPos;
+	}
+
 	public int get_width() {
-		return height;
+		return width;
 	}
 
 	public int get_height() {
-		return width;
+		return height;
 	}
 
     /**
