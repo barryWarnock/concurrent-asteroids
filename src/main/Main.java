@@ -22,7 +22,8 @@ public class Main {
 	public static boolean runQuadTree = true;
 	public static boolean testMode = false;
 	public static boolean playerLost = false;
-	public static long testDuration = 100;
+	public static int quadTreeThreshold = 2;
+	public static long testDuration = 5000;
 
 	public static void main(String[] args) {
 		Log.debugEnabled = true;

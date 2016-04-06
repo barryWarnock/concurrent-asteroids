@@ -72,6 +72,5 @@ public class Bullet extends Entity{
         if(other.getClass() != Player.class) {
             super.checkCollision2(other);
         }
-
     }
 }

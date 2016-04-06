@@ -6,15 +6,16 @@ import gui.Screen;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class CollisionQuadTree implements CollisionChecker {
 
+
+
+
     public CollisionQuadTree(int splitThreshold) {
-        //TODO define width and height somewhere else
         QuadTreeNode.set_splitThreshold(splitThreshold);
     }
 
@@ -24,11 +25,11 @@ public class CollisionQuadTree implements CollisionChecker {
         int height = game.getScreenHeight();
 
         QuadTreeNode tree = new QuadTreeNode(0, 0, width, height);
+        tree.init();
 
         for(int i=0; entities.size() > i; i++) {
             tree.insert(entities.get(i));
         }
-
         tree.check_collisions();
     }
 }
@@ -43,9 +44,10 @@ class QuadTreeNode {
     protected static int splitThreshold;
     protected boolean isSplit = false;
 
-    double x, y, width, height;
+    protected static List<Entity> partialEntities;
+    double xStart, yStart, width, height;
 
-    private ArrayList<Entity> entities;
+    private List<Entity> entities;
 
     private QuadTreeNode child_1;
     private QuadTreeNode child_2;
@@ -59,21 +61,14 @@ class QuadTreeNode {
      * @param height the height of this node
      */
     public QuadTreeNode(double x, double y, double width, double height) {
-        child_1 = null;
-        child_2 = null;
-        child_3 = null;
-        child_4 = null;
-
-        this.x = x;
-        this.y = y;
+        this.xStart = x;
+        this.yStart = y;
         this.width = width;
         this.height = height;
 
         entities = new ArrayList<>();
 
-        BufferedImage buffer = Screen.getInstance().getBuffer();
-        Graphics2D graphics = buffer.createGraphics();
-        Paint oldPaint = graphics.getPaint();
+        Graphics2D graphics = Screen.getInstance().getBuffer().createGraphics();
         graphics.setPaint(Color.RED);
         graphics.draw(new Rectangle2D.Double(x, y, width, height));
     }
@@ -82,29 +77,15 @@ class QuadTreeNode {
         QuadTreeNode.splitThreshold = splitThreshold;
     }
 
-    public static int get_splitThreshold() {
-        return QuadTreeNode.splitThreshold;
-    }
-
     /**
      * @return the number of entities in this node
      */
     protected int node_size() {
-        return this.entities.size();
+        return entities.size();
     }
-
-    /**
-     * @return the total number of entities in the sub-tree that has this node as the root
-     */
-    protected int total_size() {
-        int count = this.entities.size();
-        count += (this.child_1 != null) ? (this.child_1.total_size()) : (0);
-        count += (this.child_2 != null) ? (this.child_2.total_size()) : (0);
-        count += (this.child_3 != null) ? (this.child_3.total_size()) : (0);
-        count += (this.child_4 != null) ? (this.child_4.total_size()) : (0);
-        return count;
+    protected void init() {
+        partialEntities = new ArrayList<>();
     }
-
     /**
      * checks an entity for intersection with this node
      *
@@ -119,16 +100,16 @@ class QuadTreeNode {
         double eWidth  = e.get_width();
         double eHeight = e.get_height();
 
-        QuadTreeIntersect intersectType = QuadTreeIntersect.NONE;;
+        QuadTreeIntersect intersectType = QuadTreeIntersect.NONE;
 
-        //check for partial
-        if (!(this.x > eX+eWidth || this.x+this.width < eX || this.y > eY+eHeight || this.y+this.height < eY)) {
+        if( (xStart < eX && xStart + width > eX + eWidth) ||
+                (yStart < eY && yStart + height > eY + eHeight)) {
+            intersectType = QuadTreeIntersect.TOTAL;
+        } else if( (yStart < eY + eHeight && eY < yStart) ||
+                (eX < xStart && eX + eWidth > xStart) ||
+                (eY < yStart + height && yStart + height < eY + eHeight) ||
+                (eX < xStart + width && xStart + width < eX + eHeight)) {
             intersectType = QuadTreeIntersect.PARTIAL;
-
-            //check for total
-            if (eX > this.x && eX < this.x + this.width && eY > this.y && eY < this.y + this.height) {
-                intersectType = QuadTreeIntersect.TOTAL;
-            }
         }
 
         return intersectType;
@@ -147,28 +128,23 @@ class QuadTreeNode {
 
         if (!isSplit) {
             entities.add(e);
-            if (this.node_size() > splitThreshold) {
-                this.split();
+            if (node_size() > splitThreshold) {
+                split();
             }
             return true;
         }
 
-        QuadTreeIntersect child1Intersect, child2Intersect, child3Intersect, child4Intersect;
-        child1Intersect = child_1.check_entity_is_in(e);
-        child2Intersect = child_2.check_entity_is_in(e);
-        child3Intersect = child_3.check_entity_is_in(e);
-        child4Intersect = child_4.check_entity_is_in(e);
-
-        if (child1Intersect == QuadTreeIntersect.TOTAL) {
+        if (child_1.check_entity_is_in(e) == QuadTreeIntersect.TOTAL) {
             child_1.insert(e);
-        } else if (child2Intersect == QuadTreeIntersect.TOTAL) {
+        } else if (child_2.check_entity_is_in(e) == QuadTreeIntersect.TOTAL) {
             child_2.insert(e);
-        } else if (child3Intersect == QuadTreeIntersect.TOTAL) {
+        } else if (child_3.check_entity_is_in(e) == QuadTreeIntersect.TOTAL) {
             child_3.insert(e);
-        } else if (child4Intersect == QuadTreeIntersect.TOTAL) {
+        } else if (child_4.check_entity_is_in(e) == QuadTreeIntersect.TOTAL) {
             child_4.insert(e);
         } else { //if the entity does not fit neatly into any of the children add to this node
-            this.entities.add(e);
+//            entities.add(e);
+            partialEntities.add(e);
         }
         return true;
     }
@@ -177,66 +153,84 @@ class QuadTreeNode {
      * splits a node into four sub-nodes
      */
     protected void split() {
-        this.isSplit = true;
+        isSplit = true;
 
         double newWidth = this.width/2;
         double newHeight = this.height/2;
-        child_1 = new QuadTreeNode(this.x, this.y, newWidth, newHeight);
-        child_2 = new QuadTreeNode(this.x+newWidth, this.y, newWidth, newHeight);
-        child_3 = new QuadTreeNode(this.x, this.y+newHeight, newWidth, newHeight);
-        child_4 = new QuadTreeNode(this.x+newWidth, this.y+newHeight, newWidth, newHeight);
+        child_1 = new QuadTreeNode(xStart, yStart, newWidth, newHeight);
+        child_2 = new QuadTreeNode(xStart + newWidth, yStart, newWidth, newHeight);
+        child_3 = new QuadTreeNode(xStart, yStart + newHeight, newWidth, newHeight);
+        child_4 = new QuadTreeNode(xStart + newWidth, yStart + newHeight, newWidth, newHeight);
 
-        ArrayList<Entity> entitiesCopy = new ArrayList<>();
-        entitiesCopy.addAll(entities);
-        this.entities = new ArrayList<>();
-
+        List<Entity> entitiesCopy = entities;
+        entities = new ArrayList<>();
         entitiesCopy.forEach(this::insert);
     }
 
     /**
-     * calls check_collisions(ArrayList<Entity> parentsEntitys)
+     * calls check_collisions(List<Entity> parentsEntities)
      */
-    public void check_collisions() {
-        check_collisions(null);
-    }
+//    public void check_collisions_old() {
+//        check_collisions(null);
+//    }
 
+    public void check_collisions() {
+        if(isSplit) {
+            child_1.check_collisions();
+            child_2.check_collisions();
+            child_3.check_collisions();
+            child_4.check_collisions();
+        } else {
+            //check partial entities against ones inside the node
+            for(int i=0; partialEntities.size() > i; i++) {
+                for(int j=0; entities.size() > j; j++) {
+                    partialEntities.get(i).checkCollision(entities.get(j));
+                }
+            }
+            //check all partials against each other
+            for(int i=0; partialEntities.size() > i; i++) {
+                for(int j=i; partialEntities.size() > j; j++) {
+                    partialEntities.get(i).checkCollision(partialEntities.get(j));
+                }
+            }
+            //check all elements in the node against each other
+            for(int i=0; entities.size() > i; i++) {
+                for(int j=i; entities.size() > j; j++) {
+                    entities.get(i).checkCollision(entities.get(j));
+                }
+            }
+        }
+    }
     /**
      * checks an entities list against itself then passes it down until it reaches a leaf node
      * once there everything in each leaf is checked against everything else in that node and everything that only
      * partially intersects that node
-     * @param parentsEntities
+     * @param parentsEntities the entities from the parent lists
      */
-    public void check_collisions(ArrayList<Entity> parentsEntities) {
+    public void check_collisions(List<Entity> parentsEntities) {
+
         //check nodes entities against themselves
-        if (this.entities.size() > 1) {
-            Iterator<Entity> restOfList = this.entities.iterator();
+        if (entities.size() > 1) {
+            Iterator<Entity> restOfList = entities.iterator();
             do {
                 Entity current = restOfList.next();
                 Iterator<Entity> others = restOfList;
                 while (others.hasNext()) {
                     Entity other = others.next();
                     other.checkCollision(current);
-//                    if (other.checkCollision(current)) {
-//                        other.reportCollision(current);
-//                        current.reportCollision(other);
-//                    }
                 }
             } while (restOfList.hasNext());
         }
 
         //check this node against parentsEntities
         if (parentsEntities != null) {
-            Iterator<Entity> mine    = this.entities.iterator(); //this nodes entities
+            Iterator<Entity> mine    = entities.iterator(); //this nodes entities
             Iterator<Entity> parents = parentsEntities.iterator();
             while (mine.hasNext()) {
                 Entity current = mine.next();
                 while (parents.hasNext()) {
                     Entity other = parents.next();
                     other.checkCollision(current);
-//                    if (other.checkCollision(current)) {
-//                        other.reportCollision(current);
-//                        current.reportCollision(other);
-//                    }
                 }
             }
         }

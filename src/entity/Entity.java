@@ -41,6 +41,7 @@ public abstract class Entity implements Runnable {
     public void checkCollision(Entity other) {
 		collisions.add(other);
     }
+
 	protected void checkCollision2(Entity other) {
 		if (other.getClass() == this.getClass()) {
 		} else if (
@@ -89,6 +90,7 @@ public abstract class Entity implements Runnable {
      * updates the entities position
      */
     public void update() {
+		checkAllCollisions();
         xPos += xSpeed;
         yPos += ySpeed;
 
@@ -102,7 +104,7 @@ public abstract class Entity implements Runnable {
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
 
-		if(collided || checkAllCollisions()) {
+		if(collided) {
 			die();
 		}
 		collided = false;

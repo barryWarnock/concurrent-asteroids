@@ -185,4 +185,11 @@ public class Player extends Entity {
 					xPos, yPos).setPlayerSpawned(true);
 		}
 	}
+
+	@Override
+	public void checkCollision2(Entity other) {
+		if(other.getClass() != Bullet.class) {
+			super.checkCollision2(other);
+		}
+	}
 }
