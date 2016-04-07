@@ -20,8 +20,18 @@ public class Alien extends Entity {
         } catch (IOException e) {
             Log.warn(e.getMessage());
         }
-        xPos = Screen.getInstance().getWidth()/2;
-        yPos = Screen.getInstance().getHeight()/2;
+        width = sprite.getWidth();
+        height = sprite.getHeight();
+
+        //Aliens will always start on the left and move to the right (for now)
+        xPos = 0;
+        yPos = game.randomInRange(0,game.getScreenHeight());
+
+        double plusOrMinusX = 1; //(game.randomBool()) ? (1) : (-1);
+        double plusOrMinusY = (game.randomBool()) ? (1) : (-1);
+
+        xSpeed = plusOrMinusX*game.randomInRange(1,2);
+        ySpeed = plusOrMinusY*game.randomInRange(1,2);
     }
 
 

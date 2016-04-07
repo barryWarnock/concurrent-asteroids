@@ -182,7 +182,7 @@ public class Player extends Entity {
 			new Bullet(
 					(Math.cos(Math.toRadians(degOfRotation - 90))),
 					(Math.sin(Math.toRadians(degOfRotation - 90))),
-					xPos, yPos).setPlayerSpawned(true);
+					xPos+18, yPos).setPlayerSpawned(true);
 		}
 	}
 

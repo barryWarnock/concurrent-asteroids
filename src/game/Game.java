@@ -6,6 +6,7 @@ import collision.CollisionQuadTree;
 import entity.Asteroid;
 import entity.AsteroidSize;
 import entity.Entity;
+import entity.Alien;
 import entity.Player;
 import gui.Screen;
 import main.Main;
@@ -25,6 +26,9 @@ public class Game {
     private static int frameCount = 0;
 
     private ArrayList<Entity> entityList = new ArrayList<>();
+
+    public boolean areThereAliens = false;
+
 
     private int score;
     private int lives;
@@ -48,9 +52,14 @@ public class Game {
         }
     }
 
+    public void spawnAlien(){
+
+    }
+
     public void Level1(int fps) throws InterruptedException {
         for(int i=0; 2 > i; i++) {
             entityList.add(new Asteroid(AsteroidSize.BIG));
+            entityList.add(new Alien());
         }
         gameLoop(fps);
     }
