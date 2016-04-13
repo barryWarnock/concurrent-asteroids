@@ -2,6 +2,7 @@ package entity;
 
 import game.Game;
 import gui.Screen;
+import main.Main;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public abstract class Entity implements Runnable {
 		for(int i=0; collisions.size() > i; i++) {
 			checkCollision2(collisions.get(i));
 		}
+		collisions = new ArrayList<>();
 		return collided;
 	}
 	public double get_x() {
@@ -116,7 +118,9 @@ public abstract class Entity implements Runnable {
      */
     public void draw(Screen screen) {
 		//TODO get graphic size/2 to draw in the center
-		screen.drawImage(sprite, (int) xPos, (int) yPos);
+		if(!Main.testMode) {
+			screen.drawImage(sprite, (int) xPos, (int) yPos);
+		}
 	}
 
     abstract public void die();

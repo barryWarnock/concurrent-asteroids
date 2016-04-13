@@ -25,6 +25,7 @@ public class CollisionQuadTree implements CollisionChecker {
             tree.insert(entities.get(i));
         }
         tree.check_collisions();
+        tree.destruct();
     }
 }
 
@@ -81,7 +82,7 @@ class QuadTreeNode {
      * @param e the entity to check for intersection
      * @return NONE if the entity does not intersect
      * PARTIAL if the entity only partially intersects
-     * TOTAL if the entity is completly within the node
+     * TOTAL if the entity is completely within the node
      */
     protected QuadTreeIntersect check_entity_is_in(Entity e) {
         double eX      = e.get_x();
@@ -142,7 +143,10 @@ class QuadTreeNode {
 
         List<Entity> entitiesCopy = entities;
         entities = new ArrayList<>();
-        entitiesCopy.forEach(this::insert);
+//        entitiesCopy.forEach(this::insert);
+        for(int i=0; entitiesCopy.size() > i; i++) {
+            insert(entitiesCopy.get(i));
+        }
     }
 
     public void check_collisions() {
@@ -170,6 +174,17 @@ class QuadTreeNode {
                     entities.get(i).checkCollision(entities.get(j));
                 }
             }
+        }
+    }
+    public void destruct() {
+        if(isSplit) {
+            child_1.destruct();
+            child_2.destruct();
+            child_3.destruct();
+            child_4.destruct();
+        } else {
+            entities = null;
+            partialEntities = null;
         }
     }
 }

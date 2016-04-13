@@ -2,6 +2,7 @@ package entity;
 
 import game.Game;
 import logger.Log;
+import main.Main;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -80,8 +81,11 @@ public class Asteroid extends Entity {
 
     @Override
     public void die() {
-        split();
+        if(!Main.testMode) {
+            split();
+        }
         Game.getInstance().removeEntity(this);
+        collisions = null;
         //play death animation
         //TODO
     }
