@@ -32,7 +32,7 @@ public class Game {
 
     private int score;
     private int lives;
-    private int alienParam = 0;
+    private int alienSpawnRate = 0;
 
     private Game() {
         lives = 3;
@@ -43,12 +43,12 @@ public class Game {
         entityList.add(e);
     }
 
-    public void setAlienParam(int param){
-        alienParam = param;
+    public void setAlienSpawnRate(int param){
+        alienSpawnRate = param;
     }
 
-    public int getAlienParam(){
-        return alienParam;
+    public int getAlienSpawnRate(){
+        return alienSpawnRate;
     }
 
     public boolean removeEntity(Entity e){
@@ -71,7 +71,7 @@ public class Game {
         for(int i=0; 2 > i; i++) {
             entityList.add(new Asteroid(AsteroidSize.BIG));
         }
-       setAlienParam(50);
+       setAlienSpawnRate(1000);
         gameLoop(fps);
     }
 
@@ -155,7 +155,7 @@ public class Game {
                     onLose();
                 }
 
-                if (game.randomInRange(1,getAlienParam())==1 && areThereAliens == false){
+                if (game.randomInRange(1,getAlienSpawnRate())==1 && areThereAliens == false){
                     spawnAlien();
                 }
 
