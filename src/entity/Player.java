@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import game.Game;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -112,11 +113,9 @@ public class Player extends Entity {
 
 	@Override
 	public void die() {
-		//TODO this
-
 
 		//initialize();
-		//Game.getInstance().loseLife();
+		Game.getInstance().loseLife();
 
 	}
 
