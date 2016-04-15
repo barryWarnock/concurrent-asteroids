@@ -83,7 +83,7 @@ public class Asteroid extends Entity {
         split();
         Game.getInstance().removeEntity(this);
         //play death animation
-        //TODO
+        //TODO this
     }
 
     public void spawnAtParent(Asteroid parent) {

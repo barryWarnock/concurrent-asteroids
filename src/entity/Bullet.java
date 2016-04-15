@@ -27,6 +27,8 @@ public class Bullet extends Entity{
         this.playerSpawned = playerSpawned;
     }
 
+    public boolean getPlayerSpawned(){return playerSpawned;}
+
 
     /**
      *
@@ -64,12 +66,18 @@ public class Bullet extends Entity{
     @Override
     public void die() {
         Game.getInstance().removeEntity(this);
-        currentBullets--;
+        if (playerSpawned=true) {
+            currentBullets--;
+        }
+        else{
+            Alien.setCurrentBullet(false);
+        }
+
     }
 
     @Override
     public void checkCollision2(Entity other) {
-        if(other.getClass() != Player.class) {
+        if(other.getClass() != Player.class &&  playerSpawned == true) {
             super.checkCollision2(other);
         }
     }

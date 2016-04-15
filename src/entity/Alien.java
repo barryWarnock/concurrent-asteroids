@@ -1,27 +1,29 @@
 package entity;
 
 import game.Game;
-import gui.Screen;
 import logger.Log;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Alien extends Entity {
 
-    private BufferedImage sprite;
+    private static boolean currentBullet = false;
 
+
+    public static void setCurrentBullet(boolean bool){
+        currentBullet = bool;
+    }
 
     public Alien(){
         Game game = Game.getInstance();
         try {
             sprite = ImageIO.read(getClass().getResource("/graphics/Aliens.png"));
+            width = sprite.getWidth();
+            height = sprite.getHeight();
         } catch (IOException e) {
             Log.warn(e.getMessage());
         }
-        width = sprite.getWidth();
-        height = sprite.getHeight();
 
         //Aliens will always start on the left and move to the right (for now)
         xPos = 0;
@@ -35,10 +37,34 @@ public class Alien extends Entity {
     }
 
 
+    @Override
+    public void update(){
+        if (!currentBullet){
+            shoot();
+            currentBullet=true;
+        }
+        super.update();
+    }
+
+    private void shoot(){
+        new Bullet(
+                (Game.getInstance().randomInRange(1,2)),
+                (Game.getInstance().randomInRange(1,2)),
+                xPos+18, yPos).setPlayerSpawned(false);
+
+    }
 
 
-
-
+    @Override
+    public void checkCollision2(Entity other) {
+        if(other.getClass() != Bullet.class) {
+            super.checkCollision2(other);
+        }
+        else if(((Bullet)other).getPlayerSpawned() == true){
+            super.checkCollision2(other);
+        }
+        else return;
+    }
 
 
 
