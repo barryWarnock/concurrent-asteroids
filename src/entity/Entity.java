@@ -23,6 +23,7 @@ public abstract class Entity implements Runnable {
 
     protected List<Entity> collisions;
 	protected boolean collided = false;
+    protected boolean isInvincible = false;
 
 	public Entity() {
 		xPos = 0;
@@ -106,7 +107,7 @@ public abstract class Entity implements Runnable {
         yPos = (yPos < 0) ? (screenHeight - height) : (yPos);
         yPos = (yPos + height > screenHeight) ? (0) : (yPos);
 
-		if(collided) {
+		if(collided && !isInvincible) {
 			die();
 		}
 		collided = false;

@@ -35,7 +35,7 @@ public class Game {
     private int alienSpawnRate = 0;
 
     private Game() {
-        lives = 3;
+        lives = 100;
         entityList.add(Player.getInstance());
     }
 

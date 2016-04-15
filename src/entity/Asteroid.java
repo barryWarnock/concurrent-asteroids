@@ -90,7 +90,7 @@ public class Asteroid extends Entity {
         }
         Game.getInstance().removeEntity(this);
         Game.getInstance().incrementScore(asteroidScore);
-        System.out.println("Incrementing score by: "+asteroidScore);
+//        System.out.println("Incrementing score by: "+asteroidScore);
         collisions = null;
         //play death animation
         //TODO this
