@@ -41,6 +41,12 @@ public class Main {
 				launch();
 				Log.debug("Ready to go!");
 				Game.getInstance().Level1(fps);
+                Game.getInstance().Level2(fps);
+                Game.getInstance().Level3(fps);
+                Game.getInstance().Level4(fps);
+                Game.getInstance().Level5(fps);
+                JOptionPane.showMessageDialog(null, "You Won! \nYour score was: " + Game.getInstance().getScore(), "Winner!", JOptionPane.INFORMATION_MESSAGE);
+                System.exit(0);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
