@@ -10,6 +10,7 @@ import java.io.IOException;
 public class Asteroid extends Entity {
 
     private AsteroidSize size;
+    private int asteroidScore = 0;
 
 
     public Asteroid(AsteroidSize size) {
@@ -18,12 +19,15 @@ public class Asteroid extends Entity {
             switch(size) {
                 case SMALL:
                     sprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_3.png"));
+                    asteroidScore = 400;
                     break;
                 case MEDIUM:
                     sprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_2.png"));
+                    asteroidScore = 200;
                     break;
                 case BIG:
                     sprite = ImageIO.read(getClass().getResource("/graphics/Asteroids_1.png"));
+                    asteroidScore = 100;
                     break;
             }
         } catch (IOException e) {
@@ -85,6 +89,8 @@ public class Asteroid extends Entity {
             split();
         }
         Game.getInstance().removeEntity(this);
+        Game.getInstance().incrementScore(asteroidScore);
+//        System.out.println("Incrementing score by: "+asteroidScore);
         collisions = null;
         //play death animation
         //TODO this

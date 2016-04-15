@@ -32,14 +32,23 @@ public class Game {
 
     private int score;
     private int lives;
+    private int alienSpawnRate = 0;
 
     private Game() {
-        lives = 3;
+        lives = 100;
         entityList.add(Player.getInstance());
     }
 
     public void addEntity(Entity e){
         entityList.add(e);
+    }
+
+    public void setAlienSpawnRate(int param){
+        alienSpawnRate = param;
+    }
+
+    public int getAlienSpawnRate(){
+        return alienSpawnRate;
     }
 
     public boolean removeEntity(Entity e){
@@ -53,14 +62,58 @@ public class Game {
     }
 
     public void spawnAlien(){
-
+        Game game = Game.getInstance();
+        game.addEntity(new Alien());
+        areThereAliens = true;
     }
 
     public void Level1(int fps) throws InterruptedException {
-        for(int i=0; 2 > i; i++) {
-          //  entityList.add(new Asteroid(AsteroidSize.BIG));
+        for(int i=0; 3 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.MEDIUM));
         }
-        //entityList.add(new Alien());
+       setAlienSpawnRate(1000);
+        gameLoop(fps);
+    }
+
+    public void Level2(int fps) throws InterruptedException {
+        for(int i=0; 2 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+        }
+        entityList.add(new Asteroid(AsteroidSize.MEDIUM));
+        setAlienSpawnRate(800);
+        gameLoop(fps);
+    }
+
+    public void Level3(int fps) throws InterruptedException {
+        for(int i=0; 3 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+        }
+        for (int i=0; 2>i; i++){
+            entityList.add(new Asteroid(AsteroidSize.MEDIUM));
+        }
+        setAlienSpawnRate(500);
+        gameLoop(fps);
+    }
+
+    public void Level4(int fps) throws InterruptedException {
+        for(int i=0; 4 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+        }
+        for (int i=0; 2 >i; i++){
+            entityList.add(new Asteroid(AsteroidSize.MEDIUM));
+        }
+        setAlienSpawnRate(300);
+        gameLoop(fps);
+    }
+
+    public void Level5(int fps) throws InterruptedException {
+        for(int i=0; 4 > i; i++) {
+            entityList.add(new Asteroid(AsteroidSize.BIG));
+        }
+        for (int i=0; 4 >i; i++){
+            entityList.add(new Asteroid(AsteroidSize.MEDIUM));
+        }
+        setAlienSpawnRate(250);
         gameLoop(fps);
     }
 
@@ -77,6 +130,10 @@ public class Game {
 
     public int getScore(){
         return score;
+    }
+
+    public void incrementScore(int i){
+        score += i;
     }
 
     public int getScreenWidth(){
@@ -139,6 +196,11 @@ public class Game {
                 if(Main.playerLost){
                     onLose();
                 }
+
+                if (game.randomInRange(1,getAlienSpawnRate())==1 && areThereAliens == false){
+                    spawnAlien();
+                }
+
                 lastUpdate = System.currentTimeMillis();
                 if(Main.testMode && lastUpdate - startTime > Main.testDuration) {
                     break gameLoop;
@@ -158,6 +220,10 @@ public class Game {
 
                 for (int i=0; entityList.size() > i; i++) {
                     entityList.get(i).draw(screen);
+                }
+
+                if(entityList.size()==1){
+                    return;
                 }
                 drawUI();
                 Screen.getInstance().repaint();
@@ -211,5 +277,6 @@ public class Game {
     {
         //JOptionPane.showMessageDialog("You Lost. \nYour score was: " + score);
         JOptionPane.showMessageDialog(null, "You Lost. \nYour score was: " + score, "Loser", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
     }
 }

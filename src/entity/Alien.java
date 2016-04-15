@@ -79,6 +79,8 @@ public class Alien extends Entity {
     public void die(){
         Game game = Game.getInstance();
         game.removeEntity(this);
+        game.incrementScore(500);
+        game.areThereAliens = false;
         //TODO play death animation
     }
 

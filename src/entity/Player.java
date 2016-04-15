@@ -24,6 +24,10 @@ public class Player extends Entity {
 	//speed increase in direction player is moving
 	private BufferedImage movingSprite;
 	private BufferedImage staticSprite;
+    private BufferedImage invSprite;
+
+    private final int iFrames = 100;
+    private int iFrameAge = 0;
 
 
 	private Player() {
@@ -32,6 +36,8 @@ public class Player extends Entity {
 			width = staticSprite.getWidth();
 			height = staticSprite.getHeight();
 			movingSprite = ImageIO.read(getClass().getResource("/graphics/Player_move.png"));
+            invSprite = ImageIO.read(getClass().getResource("/graphics/Player_inv.png"));
+
 		} catch (IOException e) {
 			Log.warn(e.getMessage());
 		}
@@ -82,6 +88,18 @@ public class Player extends Entity {
 			ySpeed *= decayRate;
 		}
 
+
+        if (iFrameAge < iFrames) {
+            iFrameAge++;
+            sprite = invSprite;
+        }
+        else {
+            isInvincible = false;
+            System.out.println("I am not invincible.");
+        }
+
+
+
 		sprite = rotate(sprite);
 
 	}
@@ -114,7 +132,7 @@ public class Player extends Entity {
 	@Override
 	public void die() {
 
-		//initialize();
+		initialize(Screen.getInstance().getWidth()/2,Screen.getInstance().getHeight()/2);
 		Game.getInstance().loseLife();
 
 	}
@@ -124,6 +142,9 @@ public class Player extends Entity {
 	}
 
 	public Player initialize(int xLocation, int yLocation) {
+        isInvincible = true;
+        System.out.println("I am invincible");
+        iFrameAge = 0;
 		this.xPos = xLocation;
 		this.yPos = yLocation;
 		return player;
