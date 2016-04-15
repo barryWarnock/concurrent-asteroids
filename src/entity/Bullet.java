@@ -66,10 +66,11 @@ public class Bullet extends Entity{
     @Override
     public void die() {
         Game.getInstance().removeEntity(this);
-        if (playerSpawned=true) {
+        if (playerSpawned==true) {
             currentBullets--;
         }
         else{
+            System.out.println("Setting Alien to shoot again.");
             Alien.setCurrentBullet(false);
         }
 

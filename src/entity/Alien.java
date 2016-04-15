@@ -6,6 +6,7 @@ import logger.Log;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
+
 public class Alien extends Entity {
 
     private static boolean currentBullet = false;
@@ -29,11 +30,11 @@ public class Alien extends Entity {
         xPos = 0;
         yPos = game.randomInRange(0,game.getScreenHeight());
 
-        double plusOrMinusX = 1; //(game.randomBool()) ? (1) : (-1);
+        double plusOrMinusX = (game.randomBool()) ? (1) : (-1);
         double plusOrMinusY = (game.randomBool()) ? (1) : (-1);
 
-        xSpeed = plusOrMinusX*game.randomInRange(1,2);
-        ySpeed = plusOrMinusY*game.randomInRange(1,2);
+        xSpeed = plusOrMinusX*game.randomDouble(1,2);
+        ySpeed = plusOrMinusY*game.randomDouble(1,2);
     }
 
 
@@ -47,10 +48,14 @@ public class Alien extends Entity {
     }
 
     private void shoot(){
+        Game game = Game.getInstance();
+        double plusOrMinusX = (game.randomBool()) ? (1) : (-1);
+        double plusOrMinusY = (game.randomBool()) ? (1) : (-1);
+
         new Bullet(
-                (Game.getInstance().randomInRange(1,2)),
-                (Game.getInstance().randomInRange(1,2)),
-                xPos+18, yPos).setPlayerSpawned(false);
+        (Game.getInstance().randomDouble(.5,1)*plusOrMinusX),
+        (Game.getInstance().randomDouble(.5,1)*plusOrMinusY),
+         xPos+18, yPos).setPlayerSpawned(false);
 
     }
 

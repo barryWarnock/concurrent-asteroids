@@ -60,7 +60,7 @@ public class Game {
         for(int i=0; 2 > i; i++) {
           //  entityList.add(new Asteroid(AsteroidSize.BIG));
         }
-        entityList.add(new Alien());
+        //entityList.add(new Alien());
         gameLoop(fps);
     }
 
@@ -187,6 +187,7 @@ public class Game {
         return rand.nextBoolean();
     }
 
+    public double randomDouble(double min, double max){return min + (max - min) * rand.nextDouble();}
     public double stressTest(int elements) throws InterruptedException {
         entityList = new ArrayList<>(elements);
         double avgFrameTime;
