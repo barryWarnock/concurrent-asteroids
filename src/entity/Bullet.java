@@ -70,7 +70,7 @@ public class Bullet extends Entity{
             currentBullets--;
         }
         else{
-            System.out.println("Setting Alien to shoot again.");
+         //   System.out.println("Setting Alien to shoot again.");
             Alien.setCurrentBullet(false);
         }
 
