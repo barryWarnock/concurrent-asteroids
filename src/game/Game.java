@@ -32,6 +32,7 @@ public class Game {
 
     private int score;
     private int lives;
+    private int alienParam = 0;
 
     private Game() {
         lives = 3;
@@ -40,6 +41,14 @@ public class Game {
 
     public void addEntity(Entity e){
         entityList.add(e);
+    }
+
+    public void setAlienParam(int param){
+        alienParam = param;
+    }
+
+    public int getAlienParam(){
+        return alienParam;
     }
 
     public boolean removeEntity(Entity e){
@@ -53,14 +62,16 @@ public class Game {
     }
 
     public void spawnAlien(){
-
+        Game game = Game.getInstance();
+        game.addEntity(new Alien());
+        areThereAliens = true;
     }
 
     public void Level1(int fps) throws InterruptedException {
         for(int i=0; 2 > i; i++) {
-          //  entityList.add(new Asteroid(AsteroidSize.BIG));
+            entityList.add(new Asteroid(AsteroidSize.BIG));
         }
-        //entityList.add(new Alien());
+       setAlienParam(50);
         gameLoop(fps);
     }
 
@@ -77,6 +88,10 @@ public class Game {
 
     public int getScore(){
         return score;
+    }
+
+    public void incrementScore(int i){
+        score += i;
     }
 
     public int getScreenWidth(){
@@ -139,6 +154,11 @@ public class Game {
                 if(Main.playerLost){
                     onLose();
                 }
+
+                if (game.randomInRange(1,getAlienParam())==1 && areThereAliens == false){
+                    spawnAlien();
+                }
+
                 lastUpdate = System.currentTimeMillis();
                 if(Main.testMode && lastUpdate - startTime > Main.testDuration) {
                     break gameLoop;
@@ -211,5 +231,6 @@ public class Game {
     {
         //JOptionPane.showMessageDialog("You Lost. \nYour score was: " + score);
         JOptionPane.showMessageDialog(null, "You Lost. \nYour score was: " + score, "Loser", JOptionPane.INFORMATION_MESSAGE);
+        System.exit(0);
     }
 }

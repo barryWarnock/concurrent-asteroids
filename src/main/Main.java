@@ -21,7 +21,7 @@ public class Main {
 	private static int fps = 60;
 	public static boolean runThreaded = true;
 	public static boolean runQuadTree = true;
-	public static boolean testMode = true;
+	public static boolean testMode = false;
 	public static boolean playerLost = false;
 	public static int quadTreeThreshold = 2;
 	public static long testDuration = 30_000;
