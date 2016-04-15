@@ -97,8 +97,17 @@ public class Game {
         long startTime = System.currentTimeMillis();
         gameLoop:
         while (true){
-            frameCount++;
             if (Main.testMode || System.currentTimeMillis() - lastUpdate > (1000/fps)) {
+                frameCount++;
+                //check collision
+                CollisionChecker collision;
+                if(Main.runQuadTree) {
+                    collision = new CollisionQuadTree(Main.quadTreeThreshold);
+                } else {
+                    collision = new BruteForceCollision();
+                }
+
+                collision.checkCollisions(entityList);
 
                 if (Main.runThreaded) {
 
@@ -126,25 +135,10 @@ public class Game {
                     }
                 }
 
-                //check collision
-                CollisionChecker collision;
-                if(Main.runQuadTree) {
-                    collision = new CollisionQuadTree(Main.quadTreeThreshold);
-                } else {
-                    collision = new BruteForceCollision();
-                }
 
-                collision.checkCollisions(entityList);
-
-                Screen screen = Screen.getInstance();
-
-                for (int i=0; entityList.size() > i; i++) {
-                    entityList.get(i).draw(screen);
-                }
                 if(Main.playerLost){
                     onLose();
                 }
-                drawUI();
                 lastUpdate = System.currentTimeMillis();
                 if(Main.testMode && lastUpdate - startTime > Main.testDuration) {
                     break gameLoop;
@@ -160,6 +154,12 @@ public class Game {
                 the last draw call to the back buffer to prevent
                 stuttering.
                  */
+                Screen screen = Screen.getInstance();
+
+                for (int i=0; entityList.size() > i; i++) {
+                    entityList.get(i).draw(screen);
+                }
+                drawUI();
                 Screen.getInstance().repaint();
             }
         }
@@ -199,7 +199,11 @@ public class Game {
             elements--;
         }
         gameLoop(0);
+        for(int i = 0; i < entityList.size(); i++) {
+            entityList.get(i).die();
+        }
         avgFrameTime = (Main.testDuration/(double)frameCount);
+        System.gc();
         return avgFrameTime;
     }
 
